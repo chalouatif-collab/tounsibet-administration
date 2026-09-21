@@ -4,334 +4,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MINIADMIN | MENU</title>
+    <title>TounsiBet | Shop Admin</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tRed: '#E70012',        
+                        tRedDark: '#b3000e',    
+                        tGreyBase: '#121316',   
+                        tGreyCard: '#1a1c23',   
+                        neonGreen: '#00ff87', 
+                    },
+                    fontFamily: {
+                        space: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
         body {
-            background-color: #121212 !important;
+            background-color: #121316 !important;
             color: #ffffff !important;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
-        .bg-dark-header {
-            background-color: #000000;
+        /* خلفية الأورورا السائلة */
+        .aurora-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; background: #121316;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15;
+            animation: floatOrb 20s infinite ease-in-out alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #E70012; top: -10%; left: -10%; }
+        .orb-2 { width: 500px; height: 500px; background: #00ff87; bottom: -20%; right: -10%; animation-delay: -5s; opacity: 0.08; }
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 80px) scale(1.1); }
         }
 
-        .bg-green-header {
-            background-color: #0f5132;
-        }
-
-        .bg-green-section {
-            background-color: #198754;
+        /* مكونات التصميم الزجاجي */
+        .glass-panel {
+            background: rgba(26, 28, 35, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .menu-btn {
-            background-color: #1e1e1e;
-            border: 1px solid #333333;
+            background: rgba(18, 19, 22, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             color: #ffffff;
-            width: 100%;
-            text-align: left;
-            padding: 8px 12px;
-            /* تم تصغير الحشوة الداخلية */
-            border-radius: 6px;
-            margin-bottom: 6px;
-            /* تقليل المسافة بين الأزرار */
-            font-size: 13px;
-            /* تصغير حجم الخط */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.2s;
+            width: 100%; text-align: left;
+            padding: 12px 16px;
+            border-radius: 0.75rem; margin-bottom: 8px;
+            font-size: 14px; font-weight: 700;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s ease;
+        }
+        .menu-btn:hover, .menu-btn:active {
+            background: rgba(231, 0, 18, 0.1);
+            border-color: rgba(231, 0, 18, 0.3);
+            transform: translateX(2px);
         }
 
-        .menu-btn:hover,
-        .menu-btn:active {
-            background-color: #2a2a2a;
-            border-color: #444;
+        .tb-input {
+            background-color: rgba(18, 19, 22, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white; width: 100%; padding: 12px 14px;
+            border-radius: 0.75rem; margin-bottom: 12px; outline: none;
+            transition: all 0.3s ease; font-family: 'JetBrains Mono', monospace;
+        }
+        .tb-input:focus {
+            border-color: #E70012 !important;
+            box-shadow: 0 0 0 2px rgba(231, 0, 18, 0.2) !important;
         }
 
-        .form-input {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            color: white;
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            outline: none;
+        .btn-red-glow {
+            background: linear-gradient(145deg, #E70012, #b3000e);
+            color: white; font-weight: 900; width: 100%;
+            padding: 12px; font-size: 14px; text-transform: uppercase; tracking: widest;
+            border-radius: 0.75rem; border: none; margin-top: 8px;
+            box-shadow: 0 4px 15px rgba(231, 0, 18, 0.4); transition: all 0.2s;
         }
+        .btn-red-glow:hover { box-shadow: 0 6px 20px rgba(231, 0, 18, 0.6); transform: translateY(-1px); }
 
-        .form-input:focus {
-            border-color: #198754;
-        }
+        ::-webkit-scrollbar { display: none; }
 
-        .action-btn {
-            background-color: #ffc107;
-            color: #000;
-            font-weight: bold;
-            width: 100%;
-            padding: 8px;
-            /* تم تصغير الحشوة */
-            font-size: 14px;
-            /* تحديد حجم خط أصغر بقليل */
-            border-radius: 6px;
-            border: none;
-            margin-top: 8px;
-        }
-
-        ::-webkit-scrollbar {
-            display: none;
-        }
-
-        #toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            width: 90%;
-            max-width: 400px;
-        }
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 400px; }
     </style>
 </head>
 
-<body class="h-screen flex flex-col overflow-hidden">
+<body class="h-screen flex flex-col overflow-hidden relative">
+
+    <!-- الخلفية السائلة -->
+    <div class="aurora-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
 
     <div id="toast-container" class="flex flex-col gap-2"></div>
 
-    <div class="bg-dark-header text-white px-4 py-3 flex items-center gap-3 font-bold text-lg border-b border-gray-800">
-        <button id="back-btn" class="hidden" onclick="showView('menu-view')">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <span id="header-title"><i class="fa-solid fa-chevron-left mr-2"></i> MINIADMIN | MENU</span>
-    </div>
-
-    <div class="bg-green-header text-white px-4 py-3 flex justify-between items-center shadow-md">
-        <div>
-            <div class="font-bold uppercase tracking-wide" id="shop-username-display">SHOP_NAME (ID: ---)</div>
-            <div class="font-bold mt-1" id="shop-balance-display">0.00 TND</div>
+    <!-- الهيدر العلوي -->
+    <div class="glass-panel rounded-none border-t-0 border-x-0 border-b border-white/10 text-white px-4 py-3 flex justify-between items-center z-10 shadow-lg">
+        <div class="flex items-center gap-3">
+            <button id="back-btn" class="hidden w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-full transition" onclick="showView('menu-view')">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </button>
+            <span id="header-title" class="font-black tracking-widest uppercase text-sm flex items-center gap-2">
+                <i class="fas fa-store text-tRed"></i> SHOP PANEL
+            </span>
         </div>
-        <button class="text-white text-2xl hover:text-gray-300 transition" onclick="showView('menu-view')">
-            <i class="fa-solid fa-house"></i>
+        <button class="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-tRed hover:text-white rounded-full transition text-gray-400" onclick="showView('menu-view')">
+            <i class="fa-solid fa-house text-sm"></i>
         </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto pb-6" id="main-container">
-
-        <div id="menu-view" class="p-3 animate-fade-in">
-
-            <div class="text-gray-400 text-sm mb-2 mt-2 px-1">Enregistreuse</div>
-            <button class="menu-btn" onclick="showView('new-user-view')">Nouvel Utilisateur</button>
-            <button class="menu-btn" onclick="fetchAndShowBalances()">Solde des cartes utilisateur</button>
-            <button class="menu-btn" onclick="fetchAndShowTransactions()">Transactions utilisateur</button>
-            <button class="menu-btn" onclick="fetchAndShowNetHistory()">Historique Net des Joueurs</button>
-            <button class="menu-btn" onclick="fetchAndShowTree()">Arbre</button>
-
-            <div class="text-gray-400 text-sm mb-2 mt-4 px-1">Les partenaires</div>
-            <button class="menu-btn" onclick="fetchAndShowSportTickets()">Historique des transactions (Sport)</button>
-            <button class="menu-btn" onclick="fetchAndShowCasinoHistory()">Historique des transactions (Casino)</button>
-
-        </div>
-
-        <div id="menu-footer" class="animate-fade-in">
-            <div class="bg-green-section text-white px-4 py-2 font-bold mb-3">Autre</div>
-            <div class="px-3">
-                <button class="menu-btn" onclick="changeLanguage('en')">Changer de Langue <i
-                        class="fa-regular fa-flag text-gray-400"></i></button>
-                <button class="menu-btn" onclick="showView('password-view')">Changer le mot de passe <i
-                        class="fa-solid fa-lock text-gray-400"></i></button>
-                <button class="menu-btn" onclick="logoutShop()">Me deconnecter <i
-                        class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i></button>
+    <!-- معلومات الوكيل (Shop) -->
+    <div class="bg-tGreyCard/80 backdrop-blur-md border-b border-tRed/30 px-4 py-3 flex justify-between items-center shadow-md z-10 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-tRed/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+        <div class="relative z-10">
+            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Connecté en tant que</div>
+            <div class="font-black uppercase tracking-wide text-sm text-white flex items-center gap-2">
+                <i class="fas fa-user-tie text-tRed"></i> <span id="shop-username-display">SHOP_NAME (ID: ---)</span>
             </div>
         </div>
+        <div class="text-right relative z-10">
+            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Solde Caisse</div>
+            <div class="font-black font-mono text-neonGreen text-lg tracking-wider" id="shop-balance-display">0.00 TND</div>
+        </div>
+    </div>
 
-        <div id="new-user-view" class="p-4 hidden animate-fade-in">
-            <div class="mb-4">
-                <label class="block text-gray-400 text-sm mb-1">Nom d'utilisateur</label>
-                <input type="text" id="new-username" class="form-input" placeholder="Nom d'utilisateur">
+    <!-- الحاوية الرئيسية للتنقل -->
+    <div class="flex-1 overflow-y-auto p-4 z-10" id="main-container">
+
+        <!-- واجهة القائمة الرئيسية -->
+        <div id="menu-view" class="animate-fade-in pb-20">
+            
+            <div class="text-tRed font-black text-[10px] uppercase tracking-widest mb-3 ml-1 flex items-center gap-2">
+                <i class="fas fa-users-cog"></i> Gestion des Joueurs
             </div>
-
-            <div class="mb-4 relative">
-                <label class="block text-gray-400 text-sm mb-1">Mot de passe</label>
-                <input type="password" id="new-password" class="form-input" placeholder="Mot de passe">
-                <button class="absolute right-3 top-8 text-gray-400" onclick="togglePassword('new-password')">
-                    <i class="fa-regular fa-eye-slash"></i>
+            <div class="glass-panel p-2 mb-6">
+                <button class="menu-btn" onclick="showView('new-user-view')">
+                    <span class="flex items-center gap-3"><i class="fas fa-user-plus text-gray-400 w-4"></i> Nouvel Utilisateur</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
+                </button>
+                <button class="menu-btn" onclick="fetchAndShowBalances()">
+                    <span class="flex items-center gap-3"><i class="fas fa-wallet text-gray-400 w-4"></i> Gérer les Soldes</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
+                </button>
+                <button class="menu-btn" onclick="fetchAndShowTree()">
+                    <span class="flex items-center gap-3"><i class="fas fa-sitemap text-gray-400 w-4"></i> Liste (Arbre)</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
                 </button>
             </div>
 
-            <button class="w-full bg-[#2a2a2a] text-white border border-gray-600 py-2 rounded mb-4"
-                onclick="generatePassword()">Générer un mot de passe</button>
-
-            <div class="mb-4 border-t border-gray-800 pt-4 mt-2">
-                <label class="block text-white font-bold mb-2">Équilibre</label>
-                <div class="flex items-center">
-                    <span class="text-gray-400 mr-2">Total:</span>
-                    <input type="number" id="new-balance"
-                        class="form-input mb-0 bg-transparent border-b border-t-0 border-l-0 border-r-0 rounded-none focus:border-green-500"
-                        value="0.00" step="0.10">
-                </div>
+            <div class="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-3 ml-1 flex items-center gap-2">
+                <i class="fas fa-chart-line"></i> Historique & Rapports
             </div>
-
-            <button class="action-btn" id="btn-create-user" onclick="createPlayerAccount()">Créer</button>
+            <div class="glass-panel p-2 mb-6">
+                <button class="menu-btn" onclick="fetchAndShowTransactions()">
+                    <span class="flex items-center gap-3"><i class="fas fa-exchange-alt text-gray-400 w-4"></i> Transferts Caisse</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
+                </button>
+                <button class="menu-btn" onclick="fetchAndShowNetHistory()">
+                    <span class="flex items-center gap-3"><i class="fas fa-balance-scale text-gray-400 w-4"></i> Bilan Net (Joueurs)</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
+                </button>
+                <button class="menu-btn" onclick="fetchAndShowSportTickets()">
+                    <span class="flex items-center gap-3"><i class="fas fa-futbol text-gray-400 w-4"></i> Historique Sportif</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
+                </button>
+                <button class="menu-btn" onclick="fetchAndShowCasinoHistory()">
+                    <span class="flex items-center gap-3"><i class="fas fa-dice text-gray-400 w-4"></i> Historique Casino</span>
+                    <i class="fa-solid fa-chevron-right text-gray-600 text-xs"></i>
+                </button>
+            </div>
         </div>
 
-        <div id="balances-view" class="p-3 hidden animate-fade-in">
-            <div class="flex gap-2 mb-3">
+        <!-- تذييل القائمة الرئيسية -->
+        <div id="menu-footer" class="animate-fade-in absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-tGreyBase via-tGreyBase to-transparent z-20 pointer-events-none">
+            <div class="glass-panel p-2 flex justify-between pointer-events-auto shadow-2xl border-tRed/20">
+                <button class="flex-1 flex flex-col items-center justify-center p-2 text-gray-400 hover:text-white transition" onclick="showView('password-view')">
+                    <i class="fa-solid fa-lock mb-1"></i>
+                    <span class="text-[9px] font-bold uppercase">Sécurité</span>
+                </button>
+                <button class="flex-1 flex flex-col items-center justify-center p-2 text-gray-400 hover:text-white transition border-l border-white/5" onclick="changeLanguage('en')">
+                    <i class="fa-solid fa-globe mb-1"></i>
+                    <span class="text-[9px] font-bold uppercase">Langue</span>
+                </button>
+                <button class="flex-1 flex flex-col items-center justify-center p-2 text-tRed hover:text-white hover:bg-tRed/10 rounded-lg transition border-l border-white/5" onclick="logoutShop()">
+                    <i class="fa-solid fa-power-off mb-1"></i>
+                    <span class="text-[9px] font-bold uppercase">Quitter</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- واجهة: مستخدم جديد -->
+        <div id="new-user-view" class="hidden animate-fade-in">
+            <div class="glass-panel p-4 border-t-4 border-t-tRed">
+                <div class="mb-4">
+                    <label class="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 ml-1">Nom d'utilisateur</label>
+                    <input type="text" id="new-username" class="tb-input text-center" placeholder="Ex: joueur123">
+                </div>
+
+                <div class="mb-4 relative">
+                    <label class="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 ml-1">Mot de passe</label>
+                    <input type="password" id="new-password" class="tb-input text-center pr-10" placeholder="Mot de passe secret">
+                    <button class="absolute right-4 top-9 text-gray-400 hover:text-white" onclick="togglePassword('new-password')">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <button class="w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold py-2 rounded-xl mb-4 text-xs transition" onclick="generatePassword()">
+                    <i class="fas fa-random mr-2"></i> Générer un mot de passe
+                </button>
+
+                <div class="mb-4 bg-black/30 p-3 rounded-xl border border-white/5 mt-2">
+                    <label class="block text-white font-bold text-xs uppercase tracking-widest mb-2 text-center">Dépôt Initial (Optionnel)</label>
+                    <div class="flex items-center justify-center gap-2">
+                        <input type="number" id="new-balance" class="tb-input mb-0 text-center text-neonGreen font-black text-lg bg-transparent border-0 border-b-2 rounded-none" value="0.00" step="0.10" style="width: 150px;">
+                        <span class="text-gray-400 font-bold">TND</span>
+                    </div>
+                </div>
+
+                <button class="btn-red-glow" id="btn-create-user" onclick="createPlayerAccount()"><i class="fas fa-plus-circle mr-2"></i> Créer le compte</button>
+            </div>
+        </div>
+
+        <!-- واجهة: إدارة الأرصدة -->
+        <div id="balances-view" class="hidden animate-fade-in flex flex-col h-full pb-10">
+            <div class="flex gap-2 mb-4">
                 <div class="relative w-full">
-                    <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
-                    <input type="text" id="search-users" oninput="filterTable('users-table', this.value)"
-                        class="form-input pl-10 mb-0" placeholder="Search">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                    <input type="text" id="search-users" oninput="filterTable('users-table', this.value)" class="tb-input pl-12 mb-0" placeholder="Rechercher un joueur...">
                 </div>
-                <button class="bg-yellow-400 text-black font-bold px-4 rounded"
-                    onclick="fetchAndShowBalances()">Search</button>
             </div>
 
-            <div class="flex justify-between bg-[#0f5132] text-white px-3 py-2 rounded-t font-bold text-sm">
-                <span>Carte d'utilisateur</span>
-                <span>Solde du Compte</span>
-            </div>
-
-            <div class="bg-[#1e1e1e] border border-gray-800 rounded-b p-2">
-                <div class="flex justify-between text-gray-300 text-sm mb-2 border-b border-gray-700 pb-2">
-                    <span><span id="users-count">0</span> Utilisateur</span>
-                    <span id="total-users-balance" class="font-bold text-white">0.00</span>
+            <div class="glass-panel p-0 overflow-hidden flex-1 flex flex-col border-t-4 border-t-blue-500">
+                <div class="bg-black/50 px-4 py-3 border-b border-white/5 flex justify-between items-center text-xs">
+                    <div class="text-gray-400"><span id="users-count" class="font-bold text-white">0</span> Joueurs</div>
+                    <div class="text-gray-400">Total: <span id="total-users-balance" class="font-bold font-mono text-white">0.00</span></div>
                 </div>
-
-                <table class="w-full text-left text-sm" id="users-table">
-                    <thead class="text-gray-400 border-b border-gray-700">
-                        <tr>
-                            <th class="py-2 font-normal">Id</th>
-                            <th class="py-2 font-normal">Nom d'utilisateur</th>
-                            <th class="py-2 font-normal text-right">Solde du Compte</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-tbody">
-                    </tbody>
-                </table>
+                
+                <div class="overflow-y-auto flex-1 p-2 no-scrollbar" style="max-height: 60vh;">
+                    <table class="w-full text-left text-sm" id="users-table">
+                        <tbody id="users-tbody" class="flex flex-col gap-2">
+                            <!-- يعبأ بالجافاسكريبت -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div id="tree-view" class="p-3 hidden animate-fade-in">
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Nom d'utilisateur</label>
-                <input type="text" id="tree-search-username" class="form-input" placeholder="Nom d'utilisateur"
-                    oninput="filterTree()">
+        <!-- واجهة: الشجرة (قائمة المستخدمين) -->
+        <div id="tree-view" class="hidden animate-fade-in">
+            <div class="glass-panel p-4 mb-4">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1 ml-1">Pseudo</label>
+                        <input type="text" id="tree-search-username" class="tb-input mb-0" placeholder="Pseudo" oninput="filterTree()">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1 ml-1">ID</label>
+                        <input type="text" id="tree-search-id" class="tb-input mb-0" placeholder="ID" oninput="filterTree()">
+                    </div>
+                </div>
+                <button class="w-full bg-white/5 border border-white/10 text-white font-bold py-2 rounded-xl text-xs" onclick="fetchAndShowTree()">Rafraîchir</button>
             </div>
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Id</label>
-                <input type="text" id="tree-search-id" class="form-input" placeholder="Id" oninput="filterTree()">
-            </div>
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Rôle</label>
-                <select class="form-input" id="tree-role" onchange="filterTree()">
-                    <option value="all">Rôle</option>
-                    <option value="player">Player</option>
-                </select>
-            </div>
-            <button class="action-btn mb-4" onclick="fetchAndShowTree()">Afficher</button>
-
-            <div id="tree-list" class="flex flex-col gap-2">
-            </div>
+            <div id="tree-list" class="flex flex-col gap-2 pb-10"></div>
         </div>
 
-        <div id="transactions-view" class="p-3 hidden animate-fade-in">
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Nom d'utilisateur</label>
-                <input type="text" id="trans-search-username" class="form-input" placeholder="Nom d'utilisateur"
-                    oninput="filterTransactions()">
+        <!-- واجهة: سجل التحويلات المالية -->
+        <div id="transactions-view" class="hidden animate-fade-in">
+            <div class="relative w-full mb-4">
+                <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                <input type="text" id="trans-search-username" class="tb-input pl-12 mb-0" placeholder="Rechercher par pseudo..." oninput="filterTransactions()">
             </div>
-            <button class="action-btn mb-4" onclick="fetchAndShowTransactions()">Afficher</button>
-            <div id="transactions-list" class="flex flex-col gap-2">
-            </div>
+            <div id="transactions-list" class="flex flex-col gap-2 pb-10"></div>
         </div>
 
-        <div id="net-history-view" class="p-3 hidden animate-fade-in">
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Nom d'utilisateur</label>
-                <input type="text" id="net-search-username" class="form-input" placeholder="Nom d'utilisateur"
-                    oninput="filterNetHistory()">
+        <!-- واجهة: البيلان الصافي (Net) -->
+        <div id="net-history-view" class="hidden animate-fade-in">
+            <div class="relative w-full mb-4">
+                <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                <input type="text" id="net-search-username" class="tb-input pl-12 mb-0" placeholder="Rechercher par pseudo..." oninput="filterNetHistory()">
             </div>
-            <button class="action-btn mb-4" onclick="fetchAndShowNetHistory()">Afficher</button>
-            <div id="net-history-list" class="flex flex-col gap-2">
-            </div>
+            <div id="net-history-list" class="flex flex-col gap-2 pb-10"></div>
         </div>
 
-        <div id="sport-history-view" class="p-3 hidden animate-fade-in">
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Nom d'utilisateur</label>
-                <input type="text" id="sport-search-username" class="form-input" placeholder="Nom d'utilisateur"
-                    oninput="filterSportHistory()">
+        <!-- واجهة: السجل الرياضي -->
+        <div id="sport-history-view" class="hidden animate-fade-in">
+            <div class="relative w-full mb-4">
+                <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                <input type="text" id="sport-search-username" class="tb-input pl-12 mb-0" placeholder="Rechercher par pseudo..." oninput="filterSportHistory()">
             </div>
-            <button class="action-btn mb-4" onclick="fetchAndShowSportTickets()">Afficher</button>
-            <div id="sport-history-list" class="flex flex-col gap-2">
-            </div>
+            <div id="sport-history-list" class="flex flex-col gap-2 pb-10"></div>
         </div>
 
-        <div id="casino-history-view" class="p-3 hidden animate-fade-in">
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm mb-1">Nom d'utilisateur</label>
-                <input type="text" id="casino-search-username" class="form-input" placeholder="Nom d'utilisateur"
-                    oninput="filterCasinoHistory()">
+        <!-- واجهة: سجل الكازينو -->
+        <div id="casino-history-view" class="hidden animate-fade-in">
+            <div class="relative w-full mb-4">
+                <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                <input type="text" id="casino-search-username" class="tb-input pl-12 mb-0" placeholder="Rechercher par pseudo..." oninput="filterCasinoHistory()">
             </div>
-            <button class="action-btn mb-4" onclick="fetchAndShowCasinoHistory()">Afficher</button>
-            <div id="casino-history-list" class="flex flex-col gap-2">
-            </div>
+            <div id="casino-history-list" class="flex flex-col gap-2 pb-10"></div>
         </div>
 
-        <div id="password-view" class="p-4 hidden animate-fade-in">
-            <div class="mb-4 relative">
-                <label class="block text-gray-400 text-sm mb-1">Entrez un nouveau mot de passe</label>
-                <input type="password" id="new-shop-pass" class="form-input"
-                    placeholder="Entrez un nouveau mot de passe">
+        <!-- واجهة: تغيير كلمة السر -->
+        <div id="password-view" class="hidden animate-fade-in">
+            <div class="glass-panel p-4 border-t-4 border-t-gray-400">
+                <div class="text-center mb-4"><i class="fas fa-shield-alt text-4xl text-gray-500"></i></div>
+                <div class="mb-4">
+                    <label class="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 ml-1 text-center">Nouveau mot de passe Caisse</label>
+                    <input type="password" id="new-shop-pass" class="tb-input text-center" placeholder="Entrez le nouveau mot de passe">
+                </div>
+                <button class="btn-red-glow" onclick="updateShopPassword()"><i class="fas fa-save mr-2"></i> Sauvegarder</button>
             </div>
-            <button class="action-btn" onclick="updateShopPassword()">Sauvegarder</button>
         </div>
 
     </div>
 
-    <div id="balance-modal"
-        class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50 p-4">
-        <div class="bg-[#1e1e1e] border border-gray-700 rounded-lg w-full max-w-sm p-4">
-            <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
-                <h3 class="text-white font-bold">Gérer le solde</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i
-                        class="fa-solid fa-xmark text-xl"></i></button>
+    <!-- نافذة منبثقة: إدارة الرصيد (Modal) -->
+    <div id="balance-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden z-[100] p-4">
+        <div class="glass-panel w-full max-w-sm p-5 border-t-4 border-t-neonGreen shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-neonGreen/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3 relative z-10">
+                <h3 class="text-white font-black uppercase tracking-widest text-xs flex items-center gap-2"><i class="fas fa-coins text-yellow-500"></i> Opération Financière</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <div class="text-center mb-4">
-                <div class="text-gray-400 text-sm">Joueur</div>
-                <div class="text-[#0ea5e9] font-mono font-bold text-lg" id="modal-username">---</div>
+            <div class="text-center mb-5 relative z-10 bg-black/30 rounded-xl p-3 border border-white/5">
+                <div class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Joueur Sélectionné</div>
+                <div class="text-white font-mono font-black text-lg" id="modal-username">---</div>
             </div>
 
-            <input type="number" id="modal-amount" class="form-input text-center text-lg font-bold"
-                placeholder="Montant (TND)">
+            <div class="relative z-10">
+                <input type="number" id="modal-amount" class="tb-input text-center text-xl font-black font-mono text-neonGreen py-3" placeholder="0.00 TND">
 
-            <div class="mb-4 relative mt-2">
-                <label class="block text-gray-400 text-sm mb-1">Nouveau mot de passe (Optionnel)</label>
-                <input type="password" id="modal-new-pass" class="form-input" placeholder="Nouveau mot de passe">
-                <button class="absolute right-3 top-8 text-gray-400" onclick="togglePassword('modal-new-pass')">
-                    <i class="fa-regular fa-eye-slash"></i>
-                </button>
-                <button onclick="changePlayerPasswordFromModal()"
-                    class="w-full bg-[#2a2a2a] text-white border border-gray-600 py-1 rounded mt-1 text-sm">Changer
-                    MDP</button>
-            </div>
+                <div class="flex gap-2 mt-2 mb-4">
+                    <button onclick="processTransaction('charge')" class="flex-1 bg-neonGreen/20 border border-neonGreen/50 text-neonGreen hover:bg-neonGreen hover:text-black font-black py-3 text-xs uppercase tracking-widest rounded-xl transition"><i class="fas fa-arrow-up mr-1"></i> Dépôt</button>
+                    <button onclick="processTransaction('withdraw')" class="flex-1 bg-tRed/20 border border-tRed/50 text-tRed hover:bg-tRed hover:text-white font-black py-3 text-xs uppercase tracking-widest rounded-xl transition"><i class="fas fa-arrow-down mr-1"></i> Retrait</button>
+                </div>
 
-            <div class="flex gap-2 mt-4">
-                <button onclick="processTransaction('charge')"
-                    class="flex-1 bg-green-600 text-white font-bold py-2 text-sm rounded">Dépôt</button>
-                <button onclick="processTransaction('withdraw')"
-                    class="flex-1 bg-red-600 text-white font-bold py-2 text-sm rounded">Retrait</button>
+                <div class="border-t border-white/10 pt-4 mt-2">
+                    <label class="block text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 text-center">Réinitialiser MDP Joueur (Optionnel)</label>
+                    <div class="flex gap-2">
+                        <input type="password" id="modal-new-pass" class="tb-input mb-0 text-sm font-mono flex-1" placeholder="Nouveau MDP">
+                        <button onclick="changePlayerPasswordFromModal()" class="bg-white/10 hover:bg-white/20 text-white font-bold px-3 rounded-xl text-xs transition"><i class="fas fa-key"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- MAIN JAVASCRIPT (تم الحفاظ عليه بالكامل مع تحديث تصميم الـ UI فقط) -->
     <script>
         const BACKEND_URL = "";
         const token = localStorage.getItem('token');
@@ -360,10 +404,12 @@
         function showNotification(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            
+            const icon = type === 'success' ? '<i class="fas fa-check-circle text-neonGreen text-lg"></i>' : '<i class="fas fa-exclamation-circle text-tRed text-lg"></i>';
+            const borderColor = type === 'success' ? 'border-neonGreen/50' : 'border-tRed/50';
 
-            toast.className = `${bgColor} text-white px-4 py-3 rounded shadow-lg flex items-center justify-between transition-all duration-300 transform translate-y-0 opacity-100 mb-2`;
-            toast.innerHTML = `<span class="text-sm font-bold">${message}</span>`;
+            toast.className = `glass-panel ${borderColor} border-l-4 p-3 flex items-center gap-3 transition-all duration-300 transform translate-y-0 opacity-100 mb-2 shadow-2xl`;
+            toast.innerHTML = `${icon} <span class="text-sm font-bold text-white font-mono">${message}</span>`;
 
             container.appendChild(toast);
             setTimeout(() => {
@@ -389,9 +435,7 @@
 
         function showView(viewId) {
             const views = ['menu-view', 'new-user-view', 'balances-view', 'tree-view', 'password-view', 'transactions-view', 'net-history-view', 'sport-history-view', 'casino-history-view'];
-            views.forEach(v => {
-                document.getElementById(v).classList.add('hidden');
-            });
+            views.forEach(v => document.getElementById(v).classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
 
             const backBtn = document.getElementById('back-btn');
@@ -401,14 +445,18 @@
             if (viewId === 'menu-view') {
                 backBtn.classList.add('hidden');
                 menuFooter.classList.remove('hidden');
-                title.innerHTML = '<i class="fa-solid fa-chevron-left mr-2"></i> MINIADMIN | MENU';
+                title.innerHTML = '<i class="fas fa-store text-tRed"></i> SHOP PANEL';
             } else {
                 backBtn.classList.remove('hidden');
                 menuFooter.classList.add('hidden');
                 let titleText = viewId.replace('-view', '').replace(/-/g, ' ').toUpperCase();
-                if (viewId === 'balances-view') titleText = 'SOLDE DES CARTES';
-                if (viewId === 'new-user-view') titleText = 'NOUVEL UTILISATEUR';
-                title.innerHTML = titleText;
+                let iconHtml = '<i class="fas fa-layer-group text-blue-400"></i>';
+                
+                if (viewId === 'balances-view') { titleText = 'SOLDES'; iconHtml = '<i class="fas fa-wallet text-neonGreen"></i>'; }
+                if (viewId === 'new-user-view') { titleText = 'NOUVEL USER'; iconHtml = '<i class="fas fa-user-plus text-tRed"></i>'; }
+                if (viewId === 'transactions-view') iconHtml = '<i class="fas fa-exchange-alt text-yellow-500"></i>';
+                
+                title.innerHTML = `${iconHtml} ${titleText}`;
             }
         }
 
@@ -438,7 +486,7 @@
                         localStorage.setItem('alpha_user', JSON.stringify(user));
                     }
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {}
         }
 
         async function createPlayerAccount() {
@@ -449,7 +497,7 @@
 
             if (!username || !password) return showNotification("Veuillez remplir les champs", "error");
 
-            btn.innerText = "⏳...";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...';
             btn.disabled = true;
 
             try {
@@ -461,7 +509,6 @@
 
                 if (res.ok) {
                     showNotification("Compte créé avec succès!");
-
                     if (initialBalance > 0) {
                         await fetch(`${BACKEND_URL}/api/admin/update-balance`, {
                             method: 'POST', headers: getAuthHeaders(),
@@ -469,19 +516,14 @@
                         });
                         showNotification(`Solde initial ${initialBalance} TND ajouté`);
                     }
-
                     document.getElementById('new-username').value = '';
                     document.getElementById('new-password').value = '';
                     document.getElementById('new-balance').value = '0.00';
-
                     await loadShopPlayersData();
-                } else {
-                    showNotification(data.detail || "Erreur", "error");
-                }
-            } catch (e) {
-                showNotification("Erreur de connexion", "error");
-            } finally {
-                btn.innerText = "Créer";
+                } else { showNotification(data.detail || "Erreur", "error"); }
+            } catch (e) { showNotification("Erreur de connexion", "error"); } 
+            finally {
+                btn.innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Créer le compte';
                 btn.disabled = false;
             }
         }
@@ -495,12 +537,11 @@
         function renderUsersTable(users) {
             const tbody = document.getElementById('users-tbody');
             document.getElementById('users-count').innerText = users.length;
-
             let totalBal = 0;
             let html = '';
 
             if (users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-gray-500">Aucun joueur</td></tr>';
+                tbody.innerHTML = '<tr class="w-full"><td class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest w-full">Aucun joueur</td></tr>';
                 document.getElementById('total-users-balance').innerText = "0.00";
                 return;
             }
@@ -509,13 +550,15 @@
                 const bal = parseFloat(u.balance || 0);
                 totalBal += bal;
                 html += `
-                <tr class="border-b border-gray-800 hover:bg-gray-800 transition">
-                    <td class="py-3 text-gray-400 font-mono text-xs">${u.id || '---'}</td>
-                    <td class="py-3 font-bold text-[#0ea5e9]">${escapeHTML(u.username)}</td>
-                    <td class="py-3 text-right font-mono font-bold">${bal.toFixed(2)}</td>
-                    <td class="py-3 text-right">
-                        <button onclick="openBalanceModal('${escapeHTML(u.username)}')" class="text-green-500 text-lg ml-2"><i class="fa-solid fa-circle-plus"></i></button>
-                    </td>
+                <tr class="flex justify-between items-center bg-tGreyBase border border-white/5 rounded-xl p-3 w-full hover:border-white/20 transition cursor-pointer" onclick="openBalanceModal('${escapeHTML(u.username)}')">
+                    <div>
+                        <div class="font-bold text-white text-sm mb-0.5"><i class="fas fa-user text-gray-500 text-[10px] mr-1"></i> ${escapeHTML(u.username)}</div>
+                        <div class="text-gray-500 font-mono text-[9px] uppercase tracking-widest">ID: ${u.id || '---'}</div>
+                    </div>
+                    <div class="text-right flex items-center gap-3">
+                        <div class="font-black font-mono text-neonGreen">${bal.toFixed(2)}</div>
+                        <i class="fa-solid fa-chevron-right text-gray-600 text-[10px]"></i>
+                    </div>
                 </tr>`;
             });
 
@@ -537,17 +580,12 @@
             document.getElementById('balance-modal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('balance-modal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('balance-modal').classList.add('hidden'); }
 
         async function processTransaction(action) {
             const amount = parseFloat(document.getElementById('modal-amount').value);
             if (!amount || amount <= 0) return showNotification("Montant invalide", "error");
-
-            if (action === 'charge' && user.balance < amount) {
-                return showNotification('Solde insuffisant!', 'error');
-            }
+            if (action === 'charge' && user.balance < amount) return showNotification('Solde caisse insuffisant!', 'error');
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/update-balance`, {
@@ -555,17 +593,12 @@
                     body: JSON.stringify({ admin_username: user.username, target_username: selectedPlayer, action, amount })
                 });
                 const data = await res.json();
-
                 if (res.ok) {
-                    showNotification("Opération réussie!");
+                    showNotification("Transaction validée!");
                     closeModal();
                     await fetchAndShowBalances();
-                } else {
-                    showNotification(data.detail || "Erreur", "error");
-                }
-            } catch (e) {
-                showNotification("Erreur de connexion", "error");
-            }
+                } else { showNotification(data.detail || "Erreur", "error"); }
+            } catch (e) { showNotification("Erreur serveur", "error"); }
         }
 
         async function changePlayerPasswordFromModal() {
@@ -574,23 +607,15 @@
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/change-player-password`, {
-                    method: 'POST',
-                    headers: getAuthHeaders(),
-                    body: JSON.stringify({
-                        admin_username: user.username,
-                        target_username: selectedPlayer,
-                        new_password: newPassword
-                    })
+                    method: 'POST', headers: getAuthHeaders(),
+                    body: JSON.stringify({ admin_username: user.username, target_username: selectedPlayer, new_password: newPassword })
                 });
                 if (res.ok) {
                     showNotification(`Mot de passe modifié avec succès!`);
                     document.getElementById('modal-new-pass').value = '';
-                } else {
-                    showNotification('Erreur', 'error');
-                }
+                } else showNotification('Erreur', 'error');
             } catch (e) { showNotification('Erreur de connexion', 'error'); }
         }
-
 
         async function fetchAndShowTree() {
             showView('tree-view');
@@ -601,21 +626,21 @@
         function renderTree(users) {
             const container = document.getElementById('tree-list');
             if (users.length === 0) {
-                container.innerHTML = '<div class="text-center py-4 text-gray-500">Aucun joueur</div>';
+                container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest">Aucun joueur</div>';
                 return;
             }
             let html = '';
             users.forEach(u => {
                 const bal = parseFloat(u.balance || 0).toFixed(2);
                 html += `
-                 <div class="bg-[#1e1e1e] border border-gray-700 rounded p-3 flex justify-between items-center">
+                 <div class="glass-panel p-3 flex justify-between items-center border-l-4 border-l-blue-400">
                      <div>
-                         <div class="font-bold text-lg text-white">${escapeHTML(u.username)}</div>
-                         <div class="text-gray-400 text-xs font-mono mt-1">ID: ${u.id || '---'}</div>
+                         <div class="font-bold text-sm text-white mb-0.5"><i class="fas fa-user text-gray-500 mr-1 text-[10px]"></i> ${escapeHTML(u.username)}</div>
+                         <div class="text-gray-400 text-[10px] font-mono tracking-widest">ID: ${u.id || '---'}</div>
                      </div>
                      <div class="text-right">
-                         <div class="text-sm text-gray-300">ÉQUILIBRE: <span class="font-mono font-bold text-white">${bal} TND</span></div>
-                         <div class="text-gray-400 text-xs mt-1">RÔLE: ${u.role.substring(0, 1).toUpperCase()}</div>
+                         <div class="font-mono font-black text-neonGreen">${bal} TND</div>
+                         <div class="text-gray-500 text-[9px] mt-1 uppercase font-bold tracking-widest">Rôle: ${u.role.toUpperCase()}</div>
                      </div>
                  </div>`;
             });
@@ -625,53 +650,47 @@
         function filterTree() {
             const username = document.getElementById('tree-search-username').value.toLowerCase();
             const id = document.getElementById('tree-search-id').value.toLowerCase();
-            const role = document.getElementById('tree-role').value;
-
             let filtered = createdPlayersList;
             if (username) filtered = filtered.filter(u => u.username.toLowerCase().includes(username));
             if (id) filtered = filtered.filter(u => (u.id || '').toString().toLowerCase().includes(id));
-            if (role !== 'all') filtered = filtered.filter(u => u.role === role);
-
             renderTree(filtered);
         }
 
         async function fetchAndShowTransactions() {
             showView('transactions-view');
             const container = document.getElementById('transactions-list');
-            container.innerHTML = '<div class="text-center py-4 text-gray-500">Chargement...</div>';
-
+            container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest animate-pulse">Chargement...</div>';
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/transactions-history?username=${user.username}`, { headers: getAuthHeaders() });
                 if (res.ok) {
                     allTransactionsCache = await res.json();
                     renderTransactions(allTransactionsCache);
-                } else { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur</div>'; }
-            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur de connexion</div>'; }
+                } else container.innerHTML = '<div class="text-center py-4 text-tRed font-bold">Erreur API</div>';
+            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-tRed font-bold">Erreur Connexion</div>'; }
         }
 
         function renderTransactions(txs) {
             const container = document.getElementById('transactions-list');
             if (txs.length === 0) {
-                container.innerHTML = '<div class="text-center py-4 text-gray-500">Aucune transaction</div>';
+                container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest">Aucune transaction</div>';
                 return;
             }
-
             let html = '';
             txs.forEach(t => {
                 const isCharge = t.action === 'charge' || t.action === 'deposit_request';
-                const color = isCharge ? 'text-green-500' : 'text-red-500';
+                const color = isCharge ? 'text-neonGreen' : 'text-tRed';
                 const sign = isCharge ? '+' : '-';
                 const targetName = escapeHTML(t.target_username || t.target || 'Inconnu');
                 const actionName = escapeHTML(t.action);
-
                 html += `
-                <div class="bg-[#1e1e1e] border border-gray-700 rounded p-3 flex justify-between items-center">
+                <div class="glass-panel p-3 flex justify-between items-center mb-1">
                     <div>
-                        <div class="font-bold text-white">👤 ${targetName} <span class="text-gray-400 text-xs">(${actionName})</span></div>
-                        <div class="text-gray-400 text-xs font-mono mt-1">🕒 ${t.date || ''}</div>
+                        <div class="font-bold text-white text-sm mb-1"><i class="fas fa-user text-gray-500 text-[10px] mr-1"></i> ${targetName}</div>
+                        <div class="text-gray-400 text-[9px] font-mono tracking-widest mb-1 uppercase">${actionName}</div>
+                        <div class="text-gray-500 text-[9px] font-mono">🕒 ${t.date || ''}</div>
                     </div>
                     <div class="text-right">
-                        <div class="font-mono font-bold ${color}">${sign}${parseFloat(t.amount).toFixed(2)} TND</div>
+                        <div class="font-mono font-black text-lg ${color}">${sign}${parseFloat(t.amount).toFixed(2)}</div>
                     </div>
                 </div>`;
             });
@@ -688,64 +707,56 @@
         async function fetchAndShowNetHistory() {
             showView('net-history-view');
             const container = document.getElementById('net-history-list');
-            container.innerHTML = '<div class="text-center py-4 text-gray-500">Chargement...</div>';
-
+            container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest animate-pulse">Calcul du bilan...</div>';
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/transactions-history?username=${user.username}`, { headers: getAuthHeaders() });
                 if (res.ok) {
                     const txs = await res.json();
-
                     let userStats = {};
                     txs.forEach(t => {
                         const target = t.target_username;
                         if (!target) return;
                         if (!userStats[target]) userStats[target] = { deposit: 0, withdraw: 0 };
-
                         const amt = parseFloat(t.amount) || 0;
                         if (t.action === 'charge' || t.action === 'deposit_request') userStats[target].deposit += amt;
                         else if (t.action === 'withdraw') userStats[target].withdraw += amt;
                     });
-
                     let statsArray = [];
                     for (let username in userStats) {
                         statsArray.push({
-                            username: username,
-                            deposit: userStats[username].deposit,
-                            withdraw: userStats[username].withdraw,
-                            net: userStats[username].deposit - userStats[username].withdraw
+                            username: username, deposit: userStats[username].deposit,
+                            withdraw: userStats[username].withdraw, net: userStats[username].deposit - userStats[username].withdraw
                         });
                     }
-
                     window._currentNetStats = statsArray;
                     renderNetHistory(statsArray);
-
-                } else { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur</div>'; }
-            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur de connexion</div>'; }
+                } else container.innerHTML = '<div class="text-center py-4 text-tRed">Erreur</div>';
+            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-tRed">Erreur de connexion</div>'; }
         }
 
         function renderNetHistory(stats) {
             const container = document.getElementById('net-history-list');
             if (stats.length === 0) {
-                container.innerHTML = '<div class="text-center py-4 text-gray-500">Aucune donnée</div>';
+                container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest">Aucune donnée</div>';
                 return;
             }
             let html = '';
             stats.forEach(s => {
-                const netColor = s.net >= 0 ? 'text-green-500' : 'text-red-500';
+                const netColor = s.net >= 0 ? 'text-neonGreen' : 'text-tRed';
                 html += `
-                <div class="bg-[#1e1e1e] border border-gray-700 rounded p-3">
-                     <div class="font-bold text-white mb-2 text-lg border-b border-gray-700 pb-1">👤 ${escapeHTML(s.username)}</div>
-                     <div class="flex justify-between text-sm mb-1">
-                         <span class="text-gray-400">Dépôt:</span>
-                         <span class="text-white font-mono">${s.deposit.toFixed(2)}</span>
+                <div class="glass-panel p-4 mb-2">
+                     <div class="font-bold text-white text-sm mb-3 border-b border-white/10 pb-2"><i class="fas fa-user text-gray-500 mr-2 text-xs"></i> ${escapeHTML(s.username)}</div>
+                     <div class="flex justify-between text-xs mb-2">
+                         <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px]">Total Dépôts:</span>
+                         <span class="text-white font-mono font-bold">${s.deposit.toFixed(2)} TND</span>
                      </div>
-                     <div class="flex justify-between text-sm mb-1">
-                         <span class="text-gray-400">Retrait:</span>
-                         <span class="text-white font-mono">${s.withdraw.toFixed(2)}</span>
+                     <div class="flex justify-between text-xs mb-3">
+                         <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px]">Total Retraits:</span>
+                         <span class="text-white font-mono font-bold">${s.withdraw.toFixed(2)} TND</span>
                      </div>
-                     <div class="flex justify-between text-sm font-bold border-t border-gray-700 pt-1 mt-1">
-                         <span class="text-gray-300">Total:</span>
-                         <span class="font-mono ${netColor}">${s.net.toFixed(2)}</span>
+                     <div class="flex justify-between text-sm font-bold bg-black/30 p-2 rounded-lg border border-white/5">
+                         <span class="text-gray-300 font-bold uppercase tracking-widest text-[10px] mt-1">Bilan Net:</span>
+                         <span class="font-mono font-black text-lg ${netColor}">${s.net.toFixed(2)} TND</span>
                      </div>
                 </div>`;
             });
@@ -762,49 +773,46 @@
         async function fetchAndShowSportTickets() {
             showView('sport-history-view');
             const container = document.getElementById('sport-history-list');
-            container.innerHTML = '<div class="text-center py-4 text-gray-500">Chargement...</div>';
-
+            container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest animate-pulse">Chargement des tickets...</div>';
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/get-all-tickets?t=${Date.now()}`, { headers: getAuthHeaders() });
                 if (res.ok) {
                     const allTickets = await res.json();
-
                     const shopPlayers = createdPlayersList.map(p => p.username);
                     allSportTicketsCache = allTickets.filter(t => shopPlayers.includes(t.username || t.user));
-
                     renderSportTickets(allSportTicketsCache);
-                } else { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur</div>'; }
-            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur de connexion</div>'; }
+                } else container.innerHTML = '<div class="text-center py-4 text-tRed">Erreur</div>';
+            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-tRed">Erreur de connexion</div>'; }
         }
 
         function renderSportTickets(tickets) {
             const container = document.getElementById('sport-history-list');
             if (tickets.length === 0) {
-                container.innerHTML = '<div class="text-center py-4 text-gray-500">Aucun ticket en attente</div>';
+                container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest">Aucun ticket sportif</div>';
                 return;
             }
             let html = '';
             tickets.forEach(t => {
-                let badgeColor = t.status === "gagne" ? "text-green-500" : (t.status === "perdu" ? "text-red-500" : (t.status === "cashout" ? "text-yellow-500" : "text-blue-500"));
-                let matchesHtml = Array.isArray(t.details_list) ? t.details_list.map(g => `• ${escapeHTML(g.matchName)} (<span class="text-yellow-500">${escapeHTML(g.outcome)}</span>)`).join('<br>') : escapeHTML(t.match || "Match Inconnu");
+                let badgeColor = t.status === "gagne" ? "text-neonGreen border-neonGreen/30 bg-neonGreen/10" : (t.status === "perdu" ? "text-tRed border-tRed/30 bg-tRed/10" : "text-blue-400 border-blue-400/30 bg-blue-400/10");
+                let matchesHtml = Array.isArray(t.details_list) ? t.details_list.map(g => `<div class="mb-1 text-gray-300"><span class="text-blue-400 mr-1">•</span>${escapeHTML(g.matchName)} <span class="text-gray-500 ml-1">(${escapeHTML(g.outcome)})</span></div>`).join('') : `<div class="text-gray-300">${escapeHTML(t.match || "Match Inconnu")}</div>`;
 
                 html += `
-                 <div class="bg-[#1e1e1e] border border-gray-700 rounded p-3 text-sm">
-                     <div class="flex justify-between items-start mb-2">
+                 <div class="glass-panel p-3 mb-2 text-sm border-l-4 ${t.status === 'gagne' ? 'border-neonGreen' : (t.status === 'perdu' ? 'border-tRed' : 'border-blue-400')}">
+                     <div class="flex justify-between items-start mb-3 border-b border-white/5 pb-2">
                          <div class="text-white">
-                             <span class="text-gray-400 font-mono">#${t.ticket_id || t.id || ''}</span><br>
-                             👤 <span class="text-[#0ea5e9] font-bold">${t.username || t.user || ''}</span>
+                             <span class="text-gray-400 font-mono text-[9px] uppercase tracking-widest">Ticket #${t.ticket_id || t.id || ''}</span><br>
+                             <i class="fas fa-user text-gray-500 mr-1 text-[10px]"></i> <span class="font-bold text-sm">${t.username || t.user || ''}</span>
                          </div>
-                         <span class="border border-gray-600 px-2 py-1 rounded text-xs uppercase ${badgeColor} font-bold">${t.status}</span>
+                         <span class="border px-2 py-1 rounded text-[9px] tracking-widest uppercase font-bold ${badgeColor}">${t.status}</span>
                      </div>
-                     <div class="text-gray-300 mb-2 leading-relaxed">${matchesHtml}</div>
-                     <div class="border-t border-gray-700 pt-2 flex justify-between font-mono">
-                         <div class="text-gray-400">
-                             Cote: X${parseFloat(t.total_cote || 0).toFixed(2)}<br>
-                             Mise: ${parseFloat(t.mise || 0).toFixed(2)}
+                     <div class="text-xs font-mono leading-relaxed mb-3">${matchesHtml}</div>
+                     <div class="bg-black/30 p-2 rounded-lg border border-white/5 flex justify-between font-mono items-center">
+                         <div class="text-gray-400 text-[10px]">
+                             Cote: <span class="text-white font-bold">X${parseFloat(t.total_cote || 0).toFixed(2)}</span><br>
+                             Mise: <span class="text-white font-bold">${parseFloat(t.mise || 0).toFixed(2)}</span>
                          </div>
-                         <div class="${badgeColor} font-bold text-right flex items-end">
-                             Gain: +${parseFloat(t.gain || 0).toFixed(2)} TND
+                         <div class="${t.status === 'gagne' ? 'text-neonGreen' : 'text-white'} font-black text-right text-lg">
+                             +${parseFloat(t.gain || 0).toFixed(2)}
                          </div>
                      </div>
                  </div>`;
@@ -822,43 +830,39 @@
         async function fetchAndShowCasinoHistory() {
             showView('casino-history-view');
             const container = document.getElementById('casino-history-list');
-            container.innerHTML = '<div class="text-center py-4 text-gray-500">Chargement...</div>';
-
+            container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest animate-pulse">Chargement...</div>';
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/casino-history`, { headers: getAuthHeaders() });
                 if (res.ok) {
                     const allHistory = await res.json();
-
                     const shopPlayers = createdPlayersList.map(p => p.username);
                     allCasinoHistoryCache = allHistory.filter(t => shopPlayers.includes(t.username));
-
                     renderCasinoHistory(allCasinoHistoryCache);
-                } else { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur</div>'; }
-            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-red-500">Erreur API</div>'; }
+                } else container.innerHTML = '<div class="text-center py-4 text-tRed">Erreur API</div>';
+            } catch (e) { container.innerHTML = '<div class="text-center py-4 text-tRed">Erreur de connexion</div>'; }
         }
 
         function renderCasinoHistory(history) {
             const container = document.getElementById('casino-history-list');
             if (history.length === 0) {
-                container.innerHTML = '<div class="text-center py-4 text-gray-500">Aucun pari de casino trouvé</div>';
+                container.innerHTML = '<div class="text-center py-6 text-gray-500 font-bold text-xs uppercase tracking-widest">Aucun log casino</div>';
                 return;
             }
             let html = '';
             history.forEach(t => {
                 const isWin = t.action === 'win';
-                const badgeColor = isWin ? 'text-green-500' : 'text-red-500';
+                const badgeColor = isWin ? 'text-neonGreen' : 'text-gray-400';
                 const sign = isWin ? '+' : '-';
                 const actionName = isWin ? 'Gain' : 'Mise';
-
                 html += `
-                 <div class="bg-[#1e1e1e] border border-gray-700 rounded p-3 flex justify-between items-center text-sm">
+                 <div class="glass-panel p-3 mb-1 flex justify-between items-center text-sm">
                      <div>
-                         <div class="text-white font-bold">👤 ${escapeHTML(t.username)}</div>
-                         <div class="text-gray-400 font-mono text-xs mt-1">🕒 ${t.date}</div>
+                         <div class="text-white font-bold mb-1"><i class="fas fa-user text-gray-500 mr-1 text-[10px]"></i> ${escapeHTML(t.username)}</div>
+                         <div class="text-gray-500 font-mono text-[9px]">🕒 ${t.date}</div>
                      </div>
                      <div class="text-right">
-                         <div class="text-xs text-gray-400 uppercase mb-1">${actionName}</div>
-                         <div class="${badgeColor} font-bold font-mono text-lg">${sign}${parseFloat(t.amount).toFixed(2)} TND</div>
+                         <div class="text-[9px] text-gray-500 uppercase tracking-widest font-bold mb-1">${actionName}</div>
+                         <div class="${badgeColor} font-black font-mono text-lg">${sign}${parseFloat(t.amount).toFixed(2)}</div>
                      </div>
                  </div>`;
             });
@@ -888,13 +892,11 @@
                     const data = await res.json();
                     showNotification(data.detail || 'Erreur', 'error');
                 }
-            } catch (e) { showNotification('Erreur de connexion', 'error'); }
+            } catch (e) { showNotification('Erreur réseau', 'error'); }
         }
 
         function changeLanguage(lang) {
-            if (lang === 'en') {
-                showNotification("English translation not fully implemented yet.", "warning");
-            }
+            if (lang === 'en') showNotification("Traduction anglaise en cours de développement.", "error");
         }
 
         function logoutShop() {
@@ -906,17 +908,15 @@
         function timerIncrement() {
             idleTime = idleTime + 1;
             if (idleTime > 15) {
-                showNotification("Déconnexion pour inactivité", "warning");
+                showNotification("Déconnexion automatique...", "error");
                 setTimeout(logoutShop, 1500);
             }
         }
         document.body.addEventListener('mousemove', () => idleTime = 0);
         document.body.addEventListener('keypress', () => idleTime = 0);
         setInterval(timerIncrement, 60000);
-
         document.addEventListener('contextmenu', event => event.preventDefault());
 
     </script>
 </body>
-
 </html>

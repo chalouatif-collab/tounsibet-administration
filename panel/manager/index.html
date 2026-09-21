@@ -4,422 +4,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpha Bet - Manager Centre</title>
+    <title>TounsiBet | Manager Centre</title>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tRed: '#E70012',        
+                        tGreyBase: '#121316',   
+                        tGreyCard: '#1a1c23',   
+                        neonGreen: '#00ff87', 
+                        tManager: '#a855f7', /* اللون الأرجواني الفخم للمانجر */
+                        tManagerDark: '#9333ea',
+                    },
+                    fontFamily: {
+                        space: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        :root {
-            /* الثيم الأرجواني الخاص بالمانجر */
-            --manager-primary: #a855f7; 
-            --manager-hover: #9333ea;
-            --bg-main: #020617;
-            --bg-sidebar: #070d1a;
-            --bg-card: #0b1329;
-            --bg-input: #020617;
-            --border-dark: #1e293b;
-        }
-
         body {
-            background-color: var(--bg-main);
-            color: #e2e8f0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.8rem;
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #121316;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace;
+        /* خلفية الأورورا السائلة */
+        .aurora-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; background: #121316;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.15;
+            animation: floatOrb 20s infinite ease-in-out alternate;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #E70012; top: -20%; left: -10%; opacity: 0.1; }
+        .orb-2 { width: 600px; height: 600px; background: #a855f7; bottom: -20%; right: -10%; animation-delay: -5s; opacity: 0.15; }
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, 90px) scale(1.1); }
         }
 
-        .card-mini {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-dark);
-            border-radius: 0.5rem;
-            padding: 0.5rem 0.75rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        /* التصميم الزجاجي */
+        .glass-panel {
+            background: rgba(26, 28, 35, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .text-manager {
-            color: var(--manager-primary) !important;
-        }
-
-        .btn-mini {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 0.35rem;
-            border: none;
-            transition: all 0.2s;
-        }
-
-        .btn-manager-mini {
-            background-color: var(--manager-primary);
-            color: white;
-        }
-
-        .btn-manager-mini:hover {
-            background-color: var(--manager-hover);
-            color: white;
-        }
-
-        .form-control-mini,
-        .form-select-mini {
-            background-color: var(--bg-input) !important;
-            border: 1px solid var(--border-dark) !important;
+        .tb-input {
+            background-color: rgba(0, 0, 0, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
             color: #ffffff !important;
-            font-family: 'JetBrains Mono', monospace;
-            border-radius: 0.35rem;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
+            border-radius: 0.5rem; padding: 0.5rem 0.75rem;
+            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
         }
-
-        .form-control-mini:focus,
-        .form-select-mini:focus {
-            border-color: var(--manager-primary) !important;
+        .tb-input:focus {
+            border-color: #a855f7 !important;
             box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2) !important;
         }
 
+        .btn-manager-glow {
+            background: linear-gradient(145deg, #a855f7, #9333ea);
+            color: #fff; font-weight: 900; border: none;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-manager-glow:hover {
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+            transform: translateY(-1px); color: #fff;
+        }
+
         .sidebar-link-mini {
-            color: #cbd5e1;
-            background-color: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border-dark);
-            border-radius: 0.4rem;
-            padding: 0.4rem 0.6rem;
-            margin-bottom: 0.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
+            color: #9ca3af; padding: 0.6rem 1rem;
+            border-radius: 0.5rem; margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none; font-size: 0.85rem; font-weight: 700;
+            transition: all 0.2s; border: 1px solid transparent; background: rgba(0,0,0,0.2);
+            width: 100%; text-align: left; cursor: pointer;
         }
-
         .sidebar-link-mini:hover {
-            background-color: var(--border-dark);
-            color: #fff;
+            background: rgba(168, 85, 247, 0.1);
+            color: white; border-color: rgba(168, 85, 247, 0.3);
         }
 
-        .offcanvas {
-            background-color: var(--bg-sidebar);
-            border-right: 1px solid var(--border-dark);
-            width: 260px !important;
+        .offcanvas, .modal-content {
+            background: rgba(26, 28, 35, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        input[type=range] {
-            accent-color: var(--manager-primary);
-            height: 4px;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        input[type=range] { accent-color: #a855f7; }
 
         .user-row-mini {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--border-dark);
-            border-radius: 0.4rem;
-            padding: 0.35rem 0.5rem;
+            background: rgba(26, 28, 35, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s;
         }
-
         .user-row-mini:hover {
-            background: rgba(30, 41, 59, 0.8);
-            border-color: var(--manager-primary);
+            background: rgba(42, 45, 53, 0.8);
+            border-color: #a855f7;
         }
     </style>
 </head>
 
 <body class="d-flex flex-column flex-md-row min-vh-100 position-relative">
 
-    <div id="toast-container" class="position-fixed bottom-0 end-0 p-2"
-        style="z-index: 1090; max-width: 300px; width: 100%;"></div>
+    <div class="aurora-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
 
-    <div class="offcanvas offcanvas-start text-white" tabindex="-1" id="sidebar-menu">
-        <div class="offcanvas-header border-bottom border-dark px-3 py-2">
-            <h6 class="offcanvas-title text-manager fw-bold" style="font-size: 0.85rem;"><i
-                    class="fa-solid fa-user-tie"></i> ALPHA MANAGER</h6>
-            <button type="button" class="btn-close btn-close-white btn-sm shadow-none"
-                data-bs-dismiss="offcanvas"></button>
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1090; max-width: 350px; width: 100%;"></div>
+
+    <!-- القائمة الجانبية (Offcanvas) -->
+    <div class="offcanvas offcanvas-start text-white border-r border-white/10" tabindex="-1" id="sidebar-menu" style="width: 280px !important;">
+        <div class="offcanvas-header border-b border-white/10 px-4 py-4">
+            <h6 class="offcanvas-title text-tManager font-black tracking-widest uppercase text-sm flex items-center gap-2"><i class="fa-solid fa-user-tie"></i> ALPHA MANAGER</h6>
+            <button type="button" class="btn-close btn-close-white btn-sm shadow-none" data-bs-dismiss="offcanvas"></button>
         </div>
 
-        <div class="offcanvas-body d-flex flex-column p-2.5">
-            <div
-                class="d-flex align-items-center justify-content-between mb-2 border border-dark p-1.5 rounded-2 bg-black">
-                <span class="text-secondary" style="font-size: 0.7rem;">🌐 Lang:</span>
-                <select id="lang-select" onchange="changeLanguage(this.value)"
-                    class="form-select form-select-mini bg-transparent text-white border-0 w-auto fw-bold shadow-none py-0">
-                    <option value="fr">Français</option>
-                    <option value="en">English</option>
+        <div class="offcanvas-body d-flex flex-column p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4 border border-white/10 p-2 rounded-xl bg-tGreyBase">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest"><i class="fas fa-globe"></i> Lang:</span>
+                <select id="lang-select" onchange="changeLanguage(this.value)" class="form-select border-0 bg-transparent text-white text-xs font-bold shadow-none py-0 w-auto cursor-pointer outline-none">
+                    <option value="fr" class="bg-tGreyBase">Français</option>
+                    <option value="en" class="bg-tGreyBase">English</option>
                 </select>
             </div>
 
-            <div class="text-secondary fw-bold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 1px;"
-                id="menu-title">Menu</div>
+            <div class="text-gray-500 font-black text-[10px] uppercase tracking-widest mb-2 ml-1" id="menu-title">Menu Principal</div>
 
             <nav class="d-flex flex-column gap-1 flex-grow-1">
-                <button onclick="fetchAndOpenHistory('casino')" class="sidebar-link-mini"><i
-                        class="fa-solid fa-dice text-manager"></i> Casino</button>
-                <button onclick="fetchAndOpenHistory('transfert')" class="sidebar-link-mini"><i
-                        class="fa-solid fa-right-left text-success"></i> Transferts</button>
-                <button onclick="fetchAndOpenHistory('sport')" class="sidebar-link-mini"><i
-                        class="fa-solid fa-futbol text-warning"></i> Sport</button>
-                <button onclick="fetchAndOpenHistory('compte')" class="sidebar-link-mini"><i
-                        class="fa-solid fa-chart-pie text-info"></i> Stats</button>
-                <button onclick="openPasswordModal()" class="sidebar-link-mini"><i
-                        class="fa-solid fa-key text-secondary"></i> Mot de passe</button>
+                <button onclick="fetchAndOpenHistory('casino');" class="sidebar-link-mini"><i class="fa-solid fa-dice text-tManager w-5 text-center"></i> Casino Logs</button>
+                <button onclick="fetchAndOpenHistory('transfert');" class="sidebar-link-mini"><i class="fa-solid fa-right-left text-neonGreen w-5 text-center"></i> Transferts</button>
+                <button onclick="fetchAndOpenHistory('sport');" class="sidebar-link-mini"><i class="fa-solid fa-futbol text-blue-400 w-5 text-center"></i> Paris Sportifs</button>
+                <button onclick="fetchAndOpenHistory('compte');" class="sidebar-link-mini"><i class="fa-solid fa-chart-pie text-purple-400 w-5 text-center"></i> Statistiques</button>
+                <button onclick="openPasswordModal();" class="sidebar-link-mini"><i class="fa-solid fa-key text-gray-400 w-5 text-center"></i> Sécurité</button>
             </nav>
 
-            <button onclick="logout()" id="btn-logout" class="btn btn-sm btn-outline-danger w-100 fw-bold py-1 mt-2"
-                style="font-size: 0.75rem;">
+            <button onclick="logout()" id="btn-logout" class="w-full mt-4 bg-red-500/10 border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white font-black py-3 rounded-xl transition uppercase tracking-widest text-[10px]">
                 🚪 Déconnexion
             </button>
         </div>
     </div>
 
-    <div class="flex-grow-1 d-flex flex-column position-relative w-100">
+    <!-- المحتوى الرئيسي -->
+    <div class="flex-grow-1 d-flex flex-column position-relative w-100 h-screen overflow-hidden">
 
-        <header
-            class="card-mini border-bottom border-dark px-3 py-1.5 d-flex justify-content-between align-items-center sticky-top rounded-0">
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-dark btn-sm border border-dark text-white px-2 py-1 rounded-2 shadow-none"
-                    type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-menu" style="font-size: 0.75rem;">
+        <header class="glass-panel mx-3 mt-3 mb-2 px-4 py-3 d-flex justify-content-between align-items-center rounded-2xl z-10 sticky-top">
+            <div class="d-flex align-items-center gap-3">
+                <button class="bg-tGreyBase border border-white/10 text-white w-10 h-10 rounded-xl hover:border-tManager transition flex items-center justify-center shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <span class="fw-bold text-manager tracking-wide d-none d-md-inline" style="font-size: 0.8rem;">ALPHA
-                    <span class="text-white fw-light">MANAGER</span></span>
+                <span class="font-black text-lg tracking-widest uppercase text-white hidden md:inline">Alpha <span class="text-tManager">Manager</span></span>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <button id="audio-enable-btn" onclick="enableAudio()" class="btn btn-mini btn-outline-info py-0 px-2"
-                    style="font-size: 0.65rem;">Audio </button>
-                <span class="badge bg-dark border border-success text-success font-mono px-2 py-1 shadow-sm"
-                    style="font-size: 0.75rem;" id="top-manager-balance">0.00 TND</span>
-
-                <span class="badge bg-manager text-white border border-manager px-2 py-0.5"
-                    style="font-size: 0.65rem; background-color: var(--manager-primary);" id="badge-role">Manager</span>
-                <span class="fw-bold text-white font-mono small" id="manager-username"
-                    style="font-size: 0.75rem;">manager</span>
+            
+            <div class="d-flex align-items-center gap-3">
+                <button id="audio-enable-btn" onclick="enableAudio()" class="btn bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-full text-xs font-bold transition hover:bg-blue-500 hover:text-white"><i class="fas fa-volume-up mr-1"></i> Audio</button>
+                <div class="bg-black/50 border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-neonGreen animate-pulse"></span>
+                    <span class="text-neonGreen font-mono font-bold text-sm" id="top-manager-balance">0.00 TND</span>
+                </div>
+                <div class="bg-tGreyBase border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2 hidden md:flex">
+                    <span class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">User:</span>
+                    <span class="fw-bold text-white font-mono text-sm" id="manager-username">manager</span>
+                </div>
             </div>
         </header>
 
-        <main class="flex-grow-1 overflow-y-auto p-2 no-scrollbar mx-auto w-100" style="max-width: 900px;"
-            id="main-content">
+        <main class="flex-grow-1 overflow-y-auto px-3 pb-4 no-scrollbar mx-auto w-100" style="max-width: 1000px;" id="main-content">
 
-            <div class="d-flex flex-column gap-2" id="default-dashboard-view">
+            <div class="d-flex flex-column gap-3" id="default-dashboard-view">
 
-                <section class="card-mini">
-                    <div class="row g-1 align-items-center">
+                <!-- شريط التحكم والبحث وسرعة التعديل -->
+                <section class="glass-panel p-4">
+                    <div class="row g-3 align-items-center">
                         <div class="col-12 col-md-5">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-black border-dark text-secondary py-0 px-2"
-                                    style="font-size: 0.65rem;" id="lbl-selected-user">Compte:</span>
-                                <input type="text" id="ctrl-target-user"
-                                    class="form-control form-control-mini text-manager fw-bold font-mono text-center py-0"
-                                    placeholder="Sélectionnez..." readonly>
-                            </div>
+                            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1" id="lbl-selected-user">Compte Cible:</label>
+                            <input type="text" id="ctrl-target-user" class="form-control tb-input text-tManager fw-bold font-mono text-center" placeholder="Sélectionnez un compte..." readonly>
                         </div>
                         <div class="col-12 col-md-7">
-                            <div
-                                class="d-flex align-items-center gap-2 px-2 bg-black border border-dark rounded-2 py-1">
-                                <span class="text-secondary font-mono small fw-bold"
-                                    style="font-size: 0.65rem;">RTP:<span id="rtp-val-label"
-                                        class="text-white ms-1">50%</span></span>
-                                <input type="range" id="ctrl-rtp-range" min="1" max="99" value="50"
-                                    oninput="document.getElementById('rtp-val-label').innerText = this.value + '%'"
-                                    class="form-range flex-grow-1 m-0">
-                                <button onclick="saveRtpAndBlock(0)"
-                                    class="btn btn-mini btn-success py-0 px-2">Enregistrer</button>
-                                <button onclick="saveRtpAndBlock(1)"
-                                    class="btn btn-mini btn-warning text-dark py-0 px-2">Bloquer</button>
+                            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1">Paramètres RTP & Sécurité</label>
+                            <div class="d-flex align-items-center gap-3 px-3 bg-black/40 border border-white/10 rounded-xl py-2">
+                                <span class="text-gray-300 font-mono text-xs font-bold">RTP: <span id="rtp-val-label" class="text-tManager ms-1">50%</span></span>
+                                <input type="range" id="ctrl-rtp-range" min="1" max="99" value="50" oninput="document.getElementById('rtp-val-label').innerText = this.value + '%'" class="form-range flex-grow-1 m-0">
+                                <button onclick="saveRtpAndBlock(0)" class="btn bg-neonGreen/20 text-neonGreen hover:bg-neonGreen hover:text-black border border-neonGreen/30 rounded-lg px-3 py-1 text-xs font-bold transition">Save</button>
+                                <button onclick="saveRtpAndBlock(1)" class="btn bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-lg px-3 py-1 text-xs font-bold transition">Bloquer</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="card-mini border-start border-manager border-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="fw-bold text-white" style="font-size: 0.75rem;" id="title-create-user">👤 Créer 
-                            un compte </span>
-                    </div>
-                    <div class="row g-1 align-items-center">
+                <!-- إنشاء حساب جديد -->
+                <section class="glass-panel border-l-4 border-l-tManager p-4">
+                    <h6 class="font-black text-tManager uppercase tracking-widest text-xs mb-3" id="title-create-user"><i class="fas fa-user-plus mr-2"></i> Créer un nouveau compte</h6>
+                    <div class="row g-2 align-items-center">
                         <div class="col-6 col-md-3">
-                            <input type="text" id="new-user-name"
-                                class="form-control form-control-mini font-mono text-center" placeholder="Nom d'utilisateur">
+                            <input type="text" id="new-user-name" class="form-control tb-input font-mono text-center" placeholder="Nom d'utilisateur">
                         </div>
                         <div class="col-6 col-md-3">
-                            <input type="password" id="new-user-pass"
-                                class="form-control form-control-mini font-mono text-center" placeholder="Mot de passe">
+                            <input type="password" id="new-user-pass" class="form-control tb-input font-mono text-center" placeholder="Mot de passe">
                         </div>
                         <div class="col-4 col-md-2">
-                            <select id="new-user-role" class="form-select form-select-mini font-mono py-0.5">
-                                <option value="super_admin">Super Admin</option>
-                                <option value="admin">Admin</option>
-                                <option value="shop">Shop </option>
-                                <option value="player">Player </option>
+                            <select id="new-user-role" class="form-select tb-input font-mono py-2">
+                                <option value="super_admin" class="bg-tGreyBase">Super Admin</option>
+                                <option value="admin" class="bg-tGreyBase">Admin</option>
+                                <option value="shop" class="bg-tGreyBase">Shop</option>
+                                <option value="player" class="bg-tGreyBase">Player</option>
                             </select>
                         </div>
                         <div class="col-4 col-md-2">
-                            <input type="text" id="new_phone"
-                                class="form-control form-control-mini font-mono text-center" placeholder="Téléphone">
+                            <input type="text" id="new_phone" class="form-control tb-input font-mono text-center" placeholder="Téléphone">
                         </div>
                         <div class="col-4 col-md-2">
-                            <button onclick="createNetworkUser()" class="btn btn-mini btn-manager-mini w-100 py-1"
-                                id="btn-create">Créer</button>
+                            <button onclick="createNetworkUser()" class="btn btn-manager-glow w-100 py-2.5 rounded-xl uppercase tracking-widest text-xs" id="btn-create">Créer</button>
                         </div>
                     </div>
                 </section>
 
-                <section class="card-mini">
-                    <div class="d-flex justify-content-between align-items-center border-bottom border-dark pb-1 mb-1">
-                        <span class="fw-bold text-white small" id="title-table-console" style="font-size: 0.7rem;">📋
-                             Dépôt & Retrait</span>
+                <!-- الكونسول المالي (شحن / سحب) -->
+                <section class="glass-panel p-4">
+                    <div class="border-b border-white/10 pb-2 mb-3">
+                        <h6 class="font-black text-white uppercase tracking-widest text-xs m-0" id="title-table-console"><i class="fas fa-wallet text-yellow-500 mr-2"></i> Console Financière & Mot de passe</h6>
                     </div>
 
-                    <div class="row g-1 mb-1 align-items-center">
-                        <div class="col-3">
-                            <input type="text" id="target-action-user" readonly placeholder="Compte"
-                                class="form-control form-control-mini text-center text-manager fw-bold font-mono py-1">
+                    <div class="row g-2 mb-3 align-items-center">
+                        <div class="col-12 col-md-4">
+                            <input type="text" id="target-action-user" readonly placeholder="Compte" class="form-control tb-input text-center text-tManager fw-bold font-mono">
                         </div>
-                        <div class="col-3">
-                            <input type="number" id="target-action-amount" placeholder="TND"
-                                class="form-control form-control-mini text-center font-mono py-1">
+                        <div class="col-12 col-md-4">
+                            <input type="number" id="target-action-amount" placeholder="Montant (TND)" class="form-control tb-input text-center font-mono">
                         </div>
-                        <div class="col-3">
-                            <button onclick="executeAction('charge')" id="btn-credit"
-                                class="btn btn-mini btn-success w-100 text-dark py-1">Créditer</button>
+                        <div class="col-6 col-md-2">
+                            <button onclick="executeAction('charge')" id="btn-credit" class="btn bg-neonGreen/20 border border-neonGreen/50 text-neonGreen hover:bg-neonGreen hover:text-black w-100 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest transition">Créditer</button>
                         </div>
-                        <div class="col-3">
-                            <button onclick="executeAction('withdraw')" id="btn-retirer"
-                                class="btn btn-mini btn-danger w-100 py-1">Retirer</button>
+                        <div class="col-6 col-md-2">
+                            <button onclick="executeAction('withdraw')" id="btn-retirer" class="btn bg-tRed/20 border border-tRed/50 text-tRed hover:bg-tRed hover:text-white w-100 py-2.5 rounded-xl font-bold uppercase text-xs tracking-widest transition">Retirer</button>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-1 pt-1 border-top border-dark align-items-center">
-                        <input type="password" id="ctrl-user-new-pass" placeholder="Nouveau mot de passe"
-                            class="form-control form-control-mini font-mono text-center flex-grow-1 py-1" dir="ltr">
-                        <button onclick="changeUserPasswordFromManager()"
-                            class="btn btn-mini btn-info text-dark fw-bold px-2 py-1" style="font-size: 0.7rem;">Changer le mot de passe 
-                            </button>
+                    <div class="d-flex gap-2 pt-3 border-t border-white/10 align-items-center">
+                        <input type="password" id="ctrl-user-new-pass" placeholder="Nouveau mot de passe pour le compte sélectionné" class="form-control tb-input font-mono text-center flex-grow-1 mb-0" dir="ltr">
+                        <button onclick="changeUserPasswordFromManager()" class="btn border border-white/20 hover:bg-white hover:text-black text-white font-bold rounded-xl px-4 py-2.5 text-xs uppercase tracking-widest transition">Changer MDP</button>
                     </div>
                 </section>
 
-                <section class="card-mini p-0 overflow-hidden mt-1">
-                    <div class="p-1.5 border-bottom border-dark bg-black">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-transparent border-0 text-secondary py-0 px-2"
-                                style="font-size: 0.7rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <input type="text" id="search-input" oninput="renderFilteredUsers()"
-                                placeholder="Rechercher un compte..."
-                                class="form-control form-control-mini border-dark py-1">
+                <!-- قائمة البحث والشبكة -->
+                <section class="glass-panel p-0 overflow-hidden mt-1">
+                    <div class="p-3 border-b border-white/10 bg-black/40">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0 text-gray-400 pl-2"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" id="search-input" oninput="renderFilteredUsers()" placeholder="Rechercher un compte dans le réseau..." class="form-control tb-input border-0 bg-transparent shadow-none">
                         </div>
                     </div>
-                    <div id="manager-network-tbody" class="p-1.5 d-flex flex-column gap-1"
-                        style="max-height: 450px; overflow-y: auto;">
+                    <div id="manager-network-tbody" class="p-3 d-flex flex-column gap-2 overflow-y-auto no-scrollbar" style="max-height: 400px;">
+                        <!-- يتم ملؤها ديناميكياً -->
                     </div>
                 </section>
             </div>
 
+            <!-- لوحة تصحيح التذاكر (Resettlement Panel) -->
             <div id="admin-resettlement-panel" class="d-none">
-                <button onclick="hideResettlementPanel()" class="btn btn-mini btn-outline-secondary mb-2"><i
-                        class="fa-solid fa-arrow-left"></i> Retour</button>
+                <button onclick="hideResettlementPanel()" class="btn bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black rounded-xl px-4 py-2 text-xs font-bold transition mb-3"><i class="fa-solid fa-arrow-left mr-2"></i> Retour</button>
 
-                <div class="card-mini p-3">
-                    <h6 class="text-white fw-bold mb-1" style="font-size: 0.8rem;"><i
-                            class="fas fa-tools text-manager"></i> Correction des Tickets</h6>
-                    <p class="text-secondary mb-2" style="font-size: 0.65rem;">Recherchez un ticket par son ID.</p>
+                <div class="glass-panel p-4 border-l-4 border-l-tManager">
+                    <h6 class="font-black text-tManager uppercase tracking-widest text-sm mb-1"><i class="fas fa-tools mr-2"></i> Correction des Tickets</h6>
+                    <p class="text-gray-400 text-xs mb-4">Recherchez un ticket par son ID pour modifier son statut.</p>
 
-                    <div class="input-group input-group-sm mb-2">
-                        <input type="text" id="ticket-search-input" class="form-control form-control-mini"
-                            placeholder="ID du Ticket">
-                        <button class="btn btn-mini btn-manager-mini px-3" onclick="searchTicket()"><i
-                                class="fas fa-search"></i></button>
+                    <div class="input-group mb-4">
+                        <input type="text" id="ticket-search-input" class="form-control tb-input font-mono" placeholder="ID du Ticket">
+                        <button class="btn btn-manager-glow px-4 rounded-r-xl" onclick="searchTicket()"><i class="fas fa-search"></i></button>
                     </div>
 
-                    <div id="ticket-details-section" class="d-none">
-                        <div class="bg-black rounded-2 p-2 border border-dark mb-2 d-flex justify-content-between flex-wrap gap-1 text-center font-mono"
-                            style="font-size: 0.65rem;">
-                            <div><span class="text-secondary d-block">ID</span><span
-                                    class="text-white fw-bold">#TCK-000</span></div>
-                            <div><span class="text-secondary d-block">Joueur</span><span
-                                    class="text-white fw-bold">User</span></div>
-                            <div><span class="text-secondary d-block">Mise</span><span class="text-white fw-bold">0
-                                    TND</span></div>
-                            <div><span class="text-secondary d-block">Gain</span><span class="text-success fw-bold">0
-                                    TND</span></div>
+                    <div id="ticket-details-section" class="d-none bg-black/40 border border-white/10 rounded-xl p-4 mb-4">
+                        <div class="row g-2 text-center font-mono text-sm mb-4 border-b border-white/10 pb-4">
+                            <div class="col-3"><span class="text-gray-500 text-[10px] uppercase font-bold d-block mb-1">ID</span><span class="text-white fw-bold">#TCK-000</span></div>
+                            <div class="col-3"><span class="text-gray-500 text-[10px] uppercase font-bold d-block mb-1">Joueur</span><span class="text-white fw-bold">User</span></div>
+                            <div class="col-3"><span class="text-gray-500 text-[10px] uppercase font-bold d-block mb-1">Mise</span><span class="text-white fw-bold">0 TND</span></div>
+                            <div class="col-3"><span class="text-gray-500 text-[10px] uppercase font-bold d-block mb-1">Gain</span><span class="text-neonGreen fw-bold">0 TND</span></div>
                         </div>
 
-                        <div class="d-flex flex-column gap-1 mb-2">
-                            <div
-                                class="bg-black border border-dark rounded-2 p-2 d-flex justify-content-between align-items-center gap-2">
-                                <div>
-                                    <span class="text-manager fw-bold d-block" style="font-size: 0.6rem;">Action</span>
-                                    <p class="text-white fw-bold mb-0" style="font-size: 0.75rem;">Status</p>
-                                </div>
-                                <select class="form-select form-select-mini w-auto font-mono py-0">
-                                    <option value="won" selected>Gagné ✅</option>
-                                    <option value="lost">Perdu ❌</option>
-                                    <option value="void">Annulé 🔄</option>
-                                </select>
+                        <div class="bg-black/50 border border-white/5 rounded-xl p-3 d-flex justify-content-between align-items-center gap-3 mb-4">
+                            <div>
+                                <span class="text-tManager font-bold text-[10px] uppercase tracking-widest d-block">Action</span>
+                                <p class="text-white font-bold mb-0">Modifier le Statut</p>
                             </div>
+                            <select class="form-select tb-input w-auto font-mono text-sm">
+                                <option value="won" selected>Gagné ✅</option>
+                                <option value="lost">Perdu ❌</option>
+                                <option value="void">Annulé 🔄</option>
+                            </select>
                         </div>
-                        <button onclick="resettleTicket()" class="btn btn-mini btn-success w-100 fw-bold py-1.5"><i
-                                class="fas fa-check-circle"></i> Soumettre</button>
+                        <button onclick="resettleTicket()" class="btn btn-green-glow w-100 font-bold py-3 rounded-xl uppercase tracking-widest text-xs"><i class="fas fa-check-circle mr-2"></i> Soumettre la correction</button>
                     </div>
 
-                    <div class="mt-2 border-top border-dark pt-2">
-                        <h6 class="text-white fw-bold mb-1" style="font-size: 0.75rem;">📜 Derniers Tickets</h6>
-                        <div id="all-tickets-list" class="d-flex flex-column gap-1"
-                            style="max-height: 200px; overflow-y: auto;"></div>
+                    <div class="mt-2 border-t border-white/10 pt-4">
+                        <h6 class="font-black text-white uppercase tracking-widest text-xs mb-3">📜 Derniers Tickets</h6>
+                        <div id="all-tickets-list" class="d-flex flex-column gap-2 overflow-y-auto no-scrollbar" style="max-height: 250px;"></div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- MODALS -->
     <div class="modal fade" id="historyModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content card-mini border-dark text-white shadow">
-                <div class="modal-header border-bottom border-dark py-1.5 px-3">
-                    <h6 class="modal-title fw-bold text-manager" style="font-size: 0.8rem;" id="modal-title">Historique
-                    </h6>
-                    <button type="button" class="btn-close btn-close-white btn-sm shadow-none"
-                        data-bs-dismiss="modal"></button>
+            <div class="modal-content border-white/10 shadow-2xl rounded-2xl">
+                <div class="modal-header border-b border-white/10 px-4 py-3 bg-black/50">
+                    <h6 class="modal-title font-black text-white tracking-widest uppercase text-xs" id="modal-title">Historique</h6>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body p-2.5" id="modal-dynamic-content"></div>
+                <div class="modal-body p-4 bg-tGreyBase" id="modal-dynamic-content"></div>
             </div>
         </div>
     </div>
 
     <div class="modal fade" id="passwordModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content card-mini border-dark text-white shadow">
-                <div class="modal-header border-bottom border-dark py-1.5 px-3">
-                    <h6 class="modal-title fw-bold" style="font-size: 0.75rem;">🔑 Modifier le mot de passe</h6>
-                    <button type="button" class="btn-close btn-close-white btn-sm shadow-none"
-                        data-bs-dismiss="modal"></button>
+            <div class="modal-content border-white/10 shadow-2xl rounded-2xl">
+                <div class="modal-header border-b border-white/10 px-4 py-3 bg-black/50">
+                    <h6 class="modal-title font-black text-white tracking-widest uppercase text-xs"><i class="fas fa-key text-gray-400 mr-2"></i> Sécurité</h6>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body p-2">
-                    <input type="password" id="new-sys-pass" placeholder="Nouveau mot de passe"
-                        class="form-control form-control-mini mb-2 font-mono text-center">
-                    <button onclick="submitNewPassword()"
-                        class="btn btn-mini btn-manager-mini w-100 fw-bold py-1">Mettre à jour</button>
+                <div class="modal-body p-4 bg-tGreyBase">
+                    <input type="password" id="new-sys-pass" placeholder="Nouveau mot de passe" class="form-control tb-input mb-4 font-mono text-center">
+                    <button onclick="submitNewPassword()" class="btn btn-manager-glow w-100 font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest">Mettre à jour</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- MAIN JAVASCRIPT (مُحافظ عليه بالكامل بنسبة 100%) -->
     <script>
         let isTransactionRunning = false;
         
@@ -456,37 +398,37 @@
         });
 
         const translations = {
-            fr: { menu: "Menu", selected: "Sélection:", create: "👤 Créer un compte", user: "Nom d'utilisateur", pass: "Mot de passe", console: "📋 Console financière", credit: "Créditer", retirer: "Retirer", out: "Déconnexion" },
-            en: { menu: "Menu", selected: "Selected:", create: "👤 Create Account", user: "Username", pass: "Password", console: "📋 Financial Console", credit: "Charge", retirer: "Withdraw", out: "Logout" }
+            fr: { menu: "Menu Principal", selected: "Compte Cible:", create: "Créer un nouveau compte", user: "Nom d'utilisateur", pass: "Mot de passe", console: "Console Financière & Mot de passe", credit: "Créditer", retirer: "Retirer", out: "Déconnexion" },
+            en: { menu: "Main Menu", selected: "Target Account:", create: "Create New Account", user: "Username", pass: "Password", console: "Financial Console & Password", credit: "Charge", retirer: "Withdraw", out: "Logout" }
         };
 
         function changeLanguage(lang) {
             document.documentElement.dir = 'ltr';
             document.getElementById('menu-title').innerText = translations[lang].menu;
             document.getElementById('lbl-selected-user').innerText = translations[lang].selected;
-            document.getElementById('title-create-user').innerText = translations[lang].create;
-            document.getElementById('title-table-console').innerText = translations[lang].console;
+            document.getElementById('title-create-user').innerHTML = `<i class="fas fa-user-plus mr-2"></i> ${translations[lang].create}`;
+            document.getElementById('title-table-console').innerHTML = `<i class="fas fa-wallet text-yellow-500 mr-2"></i> ${translations[lang].console}`;
             document.getElementById('btn-credit').innerText = translations[lang].credit;
             document.getElementById('btn-retirer').innerText = translations[lang].retirer;
-            document.getElementById('btn-logout').innerHTML = `🚪 ${translations[lang].out}`;
+            document.querySelectorAll('#btn-logout').forEach(btn => btn.innerHTML = `🚪 ${translations[lang].out}`);
         }
 
         function showNotification(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if (!container) return;
             const toastEl = document.createElement('div');
-            const icon = type === 'success' ? '✅' : '❌';
-            toastEl.className = `toast align-items-center text-white border-0 mb-1 show shadow`;
+            const icon = type === 'success' ? '<i class="fas fa-check-circle text-neonGreen text-lg"></i>' : '<i class="fas fa-exclamation-circle text-tRed text-lg"></i>';
+            const borderColor = type === 'success' ? 'border-neonGreen/50' : 'border-tRed/50';
+
+            toastEl.className = `glass-panel border-l-4 ${borderColor} p-3 mb-2 flex justify-between items-center shadow-2xl transition-all duration-300`;
             toastEl.innerHTML = `
-                <div class="d-flex ${type === 'success' ? 'border-success' : 'border-danger'} border-start border-3 rounded-2" style="background-color: var(--bg-card);">
-                    <div class="toast-body fw-bold d-flex gap-2 align-items-center py-2" style="font-size: 0.7rem; color: white;">
-                        <span>${icon}</span> ${message}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto shadow-none btn-sm" data-bs-dismiss="toast"></button>
+                <div class="fw-bold d-flex gap-3 align-items-center text-sm font-mono text-white">
+                    ${icon} <span>${message}</span>
                 </div>
+                <button type="button" class="btn-close btn-close-white btn-sm shadow-none ml-3" data-bs-dismiss="toast" onclick="this.parentElement.remove()"></button>
             `;
             container.appendChild(toastEl);
-            setTimeout(() => { toastEl.remove(); }, 3000);
+            setTimeout(() => { toastEl.remove(); }, 4000);
         }
 
         async function loadNetworkData() {
@@ -512,7 +454,7 @@
             container.innerHTML = '';
 
             if (data.length === 0) {
-                container.innerHTML = `<div class="text-center text-secondary p-2" style="font-size: 0.7rem;">Aucun compte trouvé</div>`;
+                container.innerHTML = `<div class="text-center text-gray-500 p-4 font-bold uppercase tracking-widest text-xs">Aucun compte trouvé</div>`;
                 return;
             }
 
@@ -524,30 +466,30 @@
                 const usernameClean = escapeHTML(u.username || 'Inconnu');
                 const createdByClean = escapeHTML(u.created_by || 'System');
                 const userRole = u.role ? u.role.toUpperCase() : 'PLAYER';
-                const statusDot = u.is_blocked === 1 ? 'bg-danger' : 'bg-success';
+                const statusDot = u.is_blocked === 1 ? 'bg-tRed' : 'bg-neonGreen';
                 const safePhone = escapeHTML(u.phone || '');
                 const phoneBadge = safePhone !== ""
-                    ? `<span class="badge bg-black text-info border border-dark ms-1 px-1 py-0" style="font-size: 0.6rem;"><i class="fa-solid fa-phone"></i> ${safePhone}</span>`
+                    ? `<span class="bg-white/5 border border-white/10 text-blue-400 px-1.5 py-0.5 rounded text-[9px] ml-2 font-sans"><i class="fa-solid fa-phone mr-1"></i>${safePhone}</span>`
                     : ``;
 
                 container.innerHTML += `
                 <div class="user-row-mini d-flex justify-content-between align-items-center" onclick="selectForControl('${usernameClean}', ${userRtp})">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="position-relative bg-black rounded-circle d-flex justify-content-center align-items-center border border-dark" style="width: 24px; height: 24px;">
-                            <i class="fa-solid fa-user text-secondary" style="font-size: 9px;"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle p-1 ${statusDot} border border-dark rounded-circle"></span>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="position-relative bg-black rounded-circle d-flex justify-content-center align-items-center border border-white/10 shadow-inner" style="width: 36px; height: 36px;">
+                            <i class="fa-solid fa-user text-gray-500 text-xs"></i>
+                            <span class="position-absolute bottom-0 right-0 p-1.5 ${statusDot} border-2 border-tGreyBase rounded-circle"></span>
                         </div>
                         <div>
-                            <div class="text-white fw-bold mb-0 d-flex align-items-center flex-wrap gap-1" style="font-size: 0.75rem;">
+                            <div class="text-white font-bold d-flex align-items-center flex-wrap text-sm mb-0.5">
                                 ${usernameClean} 
-                                <span class="badge bg-dark border border-dark text-secondary font-mono" style="font-size: 0.6rem; padding: 1px 3px;">ID: ${u.id || 'N/A'}</span>
+                                <span class="bg-white/5 border border-white/10 text-gray-400 font-mono text-[9px] px-1.5 py-0.5 rounded ml-2">ID: ${u.id || 'N/A'}</span>
                                 ${phoneBadge}
                             </div>
-                            <div class="text-info font-mono" style="font-size: 0.6rem;">${userRole} • Par: ${createdByClean}</div>
+                            <div class="text-tManager font-mono text-[9px] uppercase tracking-widest">${userRole} <span class="text-gray-600 mx-1">•</span> Par: ${createdByClean}</div>
                         </div>
                     </div>
                     <div class="text-end font-mono">
-                        <div class="text-white fw-bold" style="font-size: 0.75rem;">${balance.toFixed(2)} TND</div>
+                        <div class="text-white font-black text-sm">${balance.toFixed(2)} TND</div>
                     </div>
                 </div>`;
             });
@@ -559,50 +501,7 @@
 
             const term = document.getElementById('search-input').value.toLowerCase();
             const filtered = allUsers.filter(u => u.username.toLowerCase().includes(term));
-
-            let html = '';
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<div class="text-center text-secondary p-2" style="font-size: 0.7rem;">Aucun compte trouvé</div>`;
-                return;
-            }
-
-            filtered.forEach(u => {
-                const isSelected = secureSelectedUser === u.username;
-                const bgClass = isSelected ? 'bg-dark border-info' : 'bg-black border-dark';
-                const userRtp = u.rtp || 50;
-                const balance = parseFloat(u.balance || 0);
-
-                const usernameClean = escapeHTML(u.username || 'Inconnu');
-                const createdByClean = escapeHTML(u.created_by || 'System');
-                const userRole = u.role ? u.role.toUpperCase() : 'PLAYER';
-                const statusDot = u.is_blocked === 1 ? 'bg-danger' : 'bg-success';
-
-                const phoneHtml = u.phone ? `<span class="badge bg-black text-info border border-dark ms-1 px-1 py-0 font-mono" style="font-size: 0.6rem;"><i class="fa-solid fa-phone"></i> ${escapeHTML(u.phone)}</span>` : '';
-                const keyText = u.password || u.key;
-                const keyHtml = keyText ? `<span class="text-success ms-2 font-mono" style="font-size: 0.65rem;"><i class="fa-solid fa-key"></i> ${escapeHTML(keyText)}</span>` : '';
-
-                html += `
-                <div class="user-row-mini ${bgClass} d-flex justify-content-between align-items-center mb-1" onclick="selectForControl('${usernameClean}', ${userRtp})">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="position-relative bg-black rounded-circle d-flex justify-content-center align-items-center border border-dark" style="width: 24px; height: 24px;">
-                            <i class="fa-solid fa-user text-secondary" style="font-size: 9px;"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle p-1 ${statusDot} border border-dark rounded-circle"></span>
-                        </div>
-                        <div>
-                            <div class="text-white fw-bold mb-0 d-flex align-items-center flex-wrap gap-1" style="font-size: 0.75rem;">
-                                ${usernameClean} 
-                                <span class="badge bg-dark border border-dark text-secondary font-mono" style="font-size: 0.6rem; padding: 1px 3px;">ID: ${u.id || 'N/A'}</span>
-                                ${keyHtml} ${phoneHtml}
-                            </div>
-                            <div class="text-info font-mono" style="font-size: 0.6rem;">${userRole} • Par: ${createdByClean}</div>
-                        </div>
-                    </div>
-                    <div class="text-end font-mono">
-                        <div class="text-white fw-bold" style="font-size: 0.75rem;">${balance.toFixed(2)} TND</div>
-                    </div>
-                </div>`;
-            });
-            tbody.innerHTML = html;
+            renderUsers(filtered);
         }
 
         function selectForControl(username, rtp) {
@@ -611,7 +510,7 @@
             document.getElementById('target-action-user').value = username;
             document.getElementById('ctrl-rtp-range').value = rtp;
             document.getElementById('rtp-val-label').innerText = rtp + '%';
-            showNotification(`Sélectionné: ${username}`);
+            showNotification(`Compte sélectionné: ${username}`);
         }
 
         async function saveRtpAndBlock(isBlocked) {
@@ -629,7 +528,7 @@
                     })
                 });
                 if (res.ok) {
-                    showNotification(isBlocked ? "Compte bloqué!" : "Paramètres mis à jour!", "success");
+                    showNotification(isBlocked ? "Compte bloqué avec succès!" : "Paramètres RTP mis à jour!", "success");
                     loadNetworkData();
                 } else {
                     showNotification("Une erreur s'est produite", "error");
@@ -646,11 +545,11 @@
             const safeType = type.trim().toLowerCase();
 
             title.innerText = "Historique: " + safeType.toUpperCase();
-            body.innerHTML = '<div class="text-center p-3 text-info fw-bold" style="font-size: 0.75rem;">Chargement... ⏳</div>';
+            body.innerHTML = '<div class="text-center p-5 text-tManager font-bold uppercase tracking-widest text-xs animate-pulse"><i class="fas fa-circle-notch fa-spin text-3xl mb-3 block"></i>Chargement...</div>';
             myModal.show();
 
             if (safeType === 'pending') {
-                title.innerText = "Dépôts en Attente";
+                title.innerHTML = '<i class="fa-solid fa-bell text-yellow-500 mr-2"></i> Dépôts en Attente';
                 try {
                     const res = await fetch(`${BACKEND_URL}/api/admin/get-pending-deposits`, { headers: getAuthHeaders() });
                     if (res.ok) {
@@ -658,7 +557,7 @@
                         window._currentPendingDeposits = tickets;
 
                         if (tickets && tickets.length > 0) {
-                            let html = `<div class="d-flex flex-column gap-2" style="max-height: 350px; overflow-y: auto;">`;
+                            let html = `<div class="d-flex flex-column gap-3" style="max-height: 450px; overflow-y: auto;">`;
                             tickets.forEach((t, index) => {
                                 const ticketId = t.ticket_id || t.id || index;
                                 const username = escapeHTML(t.username || t.player || "Inconnu");
@@ -666,120 +565,112 @@
                                 const codeVal = escapeHTML(t.code || t.pin_code || t.reference || "N/A");
 
                                 const imageBtn = t.receipt_image
-                                    ? `<button onclick="viewReceiptImage(${index})" class="btn btn-mini btn-outline-info py-0 px-1" style="font-size: 0.65rem;">📸 Reçu</button>`
-                                    : `<span class="text-secondary small" style="font-size: 0.65rem;">Aucun reçu</span>`;
+                                    ? `<button onclick="viewReceiptImage(${index})" class="btn border border-blue-500/50 text-blue-400 hover:bg-blue-500 hover:text-white rounded px-2 py-1 text-[10px] font-bold"><i class="fas fa-image mr-1"></i> Reçu</button>`
+                                    : `<span class="text-gray-600 font-mono text-[10px]">Aucun reçu</span>`;
 
                                 html += `
-                                <div class="bg-black border border-warning rounded-2 p-2">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <strong class="text-white" style="font-size: 0.75rem;">👤 ${username}</strong>
-                                        <span class="badge bg-warning text-dark font-mono" style="font-size: 0.6rem;">En attente</span>
+                                <div class="bg-tGreyBase border border-yellow-500/50 rounded-xl p-3 shadow-lg">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 border-b border-white/5 pb-2">
+                                        <strong class="text-white font-bold text-sm">👤 ${username}</strong>
+                                        <span class="badge bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 font-mono text-[10px] uppercase">En attente</span>
                                     </div>
-                                    <div class="text-secondary mb-1 d-flex justify-content-between align-items-center" style="font-size: 0.65rem;">
-                                        <span>Méthode: <strong class="text-white">${method}</strong></span>
+                                    <div class="text-gray-400 text-xs mb-3 d-flex justify-content-between align-items-center">
+                                        <span>Méthode: <strong class="text-white bg-white/5 px-2 py-0.5 rounded">${method}</strong></span>
                                         ${imageBtn}
                                     </div>
-                                    <div class="bg-dark p-1 rounded-2 text-center border border-dark mb-2 font-mono text-success fw-bold" style="font-size: 0.75rem;">
+                                    <div class="bg-black p-3 rounded-xl text-center border border-white/10 mb-3 font-mono text-neonGreen font-black text-lg tracking-widest">
                                         ${codeVal}
                                     </div>
-                                    <div class="row g-1 align-items-center">
-                                        <div class="col-4">
-                                            <input type="number" id="amt-${ticketId}" class="form-control form-control-mini text-center font-mono py-0" placeholder="Montant">
-                                        </div>
-                                        <div class="col-4">
-                                            <button class="btn btn-mini btn-success w-100 py-0.5" onclick="approveDeposit('${ticketId}', '${username}')">✅ Valider</button>
-                                        </div>
-                                        <div class="col-4">
-                                            <button class="btn btn-mini btn-danger w-100 py-0.5" onclick="rejectDeposit('${ticketId}')">❌ Rejeter</button>
-                                        </div>
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-12 col-md-4"><input type="number" id="amt-${ticketId}" class="form-control tb-input text-center font-mono font-bold text-sm" placeholder="Montant"></div>
+                                        <div class="col-6 col-md-4"><button class="btn bg-neonGreen/20 border border-neonGreen/50 text-neonGreen hover:bg-neonGreen hover:text-black w-100 py-2 rounded-xl font-bold text-xs uppercase" onclick="approveDeposit('${ticketId}', '${username}')"><i class="fas fa-check mr-1"></i> Valider</button></div>
+                                        <div class="col-6 col-md-4"><button class="btn border border-tRed/50 text-tRed hover:bg-tRed hover:text-white w-100 py-2 rounded-xl font-bold text-xs uppercase transition" onclick="rejectDeposit('${ticketId}')"><i class="fas fa-times mr-1"></i> Rejeter</button></div>
                                     </div>
                                 </div>`;
                             });
                             html += `</div>`;
                             body.innerHTML = html;
-                        } else { body.innerHTML = '<div class="text-center p-3 text-secondary" style="font-size: 0.75rem;">Aucune demande.</div>'; }
-                    } else { body.innerHTML = '<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur serveur.</div>'; }
-                } catch (error) { body.innerHTML = '<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur de connexion.</div>'; }
+                        } else { body.innerHTML = '<div class="text-center p-5 text-gray-500 font-bold uppercase tracking-widest text-xs">Aucune demande en attente. ✅</div>'; }
+                    }
+                } catch (error) { body.innerHTML = '<div class="text-center p-3 text-tRed">Erreur de connexion.</div>'; }
                 return;
             }
             else if (safeType === 'withdrawals') {
-                title.innerText = "Retraits en Attente";
+                title.innerHTML = '<i class="fa-solid fa-wallet text-tRed mr-2"></i> Retraits en Attente';
                 try {
                     const res = await fetch(`${BACKEND_URL}/api/admin/get-pending-withdrawals`, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const withdrawals = await res.json();
                         if (withdrawals && withdrawals.length > 0) {
-                            let html = `<div class="d-flex flex-column gap-2" style="max-height: 350px; overflow-y: auto;">`;
+                            let html = `<div class="d-flex flex-column gap-3" style="max-height: 450px; overflow-y: auto;">`;
                             withdrawals.forEach((w, index) => {
                                 const wId = w.id || w.ticket_id || w.tx_id || index;
                                 const username = escapeHTML(w.username || w.target_username || w.player || "Inconnu");
                                 const amount = parseFloat(w.amount || 0).toFixed(2);
                                 const details = escapeHTML((w.tx_id || "").split('-').slice(2).join('-') || "Détails non spécifiés");
                                 html += `
-                                <div class="bg-black border border-danger rounded-2 p-2">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <strong class="text-white" style="font-size: 0.75rem;">👤 ${username}</strong>
-                                        <span class="badge bg-danger text-white font-mono" style="font-size: 0.6rem;">En attente</span>
+                                <div class="bg-tGreyBase border border-tRed/50 rounded-xl p-3 shadow-lg">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 border-b border-white/5 pb-2">
+                                        <strong class="text-white font-bold text-sm">👤 ${username}</strong>
+                                        <span class="badge bg-tRed/20 text-tRed border border-tRed/50 font-mono text-[10px] uppercase">En attente</span>
                                     </div>
-                                    <div class="text-secondary small mb-2 p-1 bg-dark rounded-2 border border-dark font-mono" style="font-size: 0.65rem;">
+                                    <div class="text-gray-400 text-xs mb-3 p-3 bg-black rounded-xl border border-white/10 font-mono text-center">
                                         ${details}
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center border-top border-dark pt-1">
-                                        <span class="text-danger fw-bold font-mono" style="font-size: 0.8rem;">${amount} TND</span>
-                                        <div class="d-flex gap-1">
-                                            <button class="btn btn-mini btn-success py-0.5 px-2" onclick="processWithdrawal('${wId}', '${username}', ${amount}, 'approve')">✅ Valider</button>
-                                            <button class="btn btn-mini btn-outline-danger py-0.5 px-2" onclick="processWithdrawal('${wId}', '${username}', ${amount}, 'reject')">❌ Rejeter</button>
+                                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                                        <span class="text-tRed font-black font-mono text-xl">${amount} TND</span>
+                                        <div class="d-flex gap-2 w-100 w-md-auto">
+                                            <button class="btn bg-neonGreen/20 border border-neonGreen/50 text-neonGreen hover:bg-neonGreen hover:text-black flex-grow-1 py-2 px-4 rounded-xl font-bold text-xs uppercase" onclick="processWithdrawal('${wId}', '${username}', ${amount}, 'approve')"><i class="fas fa-check mr-1"></i> Valider</button>
+                                            <button class="btn border border-tRed/50 text-tRed hover:bg-tRed hover:text-white flex-grow-1 py-2 px-4 rounded-xl font-bold text-xs uppercase transition" onclick="processWithdrawal('${wId}', '${username}', ${amount}, 'reject')"><i class="fas fa-times mr-1"></i> Rejeter</button>
                                         </div>
                                     </div>
                                 </div>`;
                             });
                             html += `</div>`;
                             body.innerHTML = html;
-                        } else {
-                            body.innerHTML = '<div class="text-center p-3 text-secondary" style="font-size: 0.75rem;">Aucune demande.</div>';
-                        }
-                    } else {
-                        body.innerHTML = '<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur serveur.</div>';
+                        } else { body.innerHTML = '<div class="text-center p-5 text-gray-500 font-bold uppercase tracking-widest text-xs">Aucune demande de retrait. ✅</div>'; }
                     }
-                } catch (error) {
-                    body.innerHTML = '<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur de connexion.</div>';
-                }
+                } catch (error) { body.innerHTML = '<div class="text-center p-3 text-tRed">Erreur de connexion.</div>'; }
                 return;
             }
             else if (safeType === 'sport') {
+                title.innerHTML = '<i class="fa-solid fa-futbol text-blue-400 mr-2"></i> Paris Sportifs';
                 try {
-                    let url = '';
-                    if (target_username && target_username !== "sélectionnez...") {
-                        url = `${BACKEND_URL}/api/admin/get-player-tickets?username=${encodeURIComponent(target_username)}&t=${Date.now()}`;
-                    } else {
-                        url = `${BACKEND_URL}/api/admin/get-all-tickets?t=${Date.now()}`;
-                    }
+                    let url = (target_username && target_username !== "sélectionnez...") 
+                        ? `${BACKEND_URL}/api/admin/get-player-tickets?username=${encodeURIComponent(target_username)}&t=${Date.now()}`
+                        : `${BACKEND_URL}/api/admin/get-all-tickets?t=${Date.now()}`;
 
                     const res = await fetch(url, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const tickets = await res.json();
                         if (tickets && tickets.length > 0) {
-                            let html = `<div class="d-flex flex-column gap-1.5" style="max-height: 350px; overflow-y: auto;">`;
+                            let html = `<div class="d-flex flex-column gap-2" style="max-height: 450px; overflow-y: auto;">`;
                             tickets.forEach(t => {
-                                let badgeColor = t.status === "gagne" ? "text-success" : (t.status === "perdu" ? "text-danger" : (t.status === "cashout" ? "text-warning" : "text-info"));
-                                let matchesHtml = Array.isArray(t.details_list) ? t.details_list.map(g => `• ${escapeHTML(g.matchName)} (<span class="text-warning">${escapeHTML(g.outcome)}</span>)`).join('<br>') : escapeHTML(t.match || "Match Inconnu");
+                                let badgeColor = t.status === "gagne" ? "text-neonGreen border-neonGreen/30 bg-neonGreen/10" : (t.status === "perdu" ? "text-tRed border-tRed/30 bg-tRed/10" : "text-blue-400 border-blue-400/30 bg-blue-400/10");
+                                let matchesHtml = Array.isArray(t.details_list) ? t.details_list.map(g => `<div class="mb-1 text-gray-300"><span class="text-blue-400 mr-1">•</span>${escapeHTML(g.matchName)} <span class="text-gray-500 ml-1">(${escapeHTML(g.outcome)})</span></div>`).join('') : `<div class="text-gray-300">${escapeHTML(t.match || "Match Inconnu")}</div>`;
+                                
                                 html += `
-                                <div class="bg-black border border-dark rounded-2 p-2 d-flex flex-column flex-md-row justify-content-between gap-2" style="font-size: 0.7rem;">
-                                    <div class="text-white">
-                                        <span class="text-secondary font-mono">#${t.ticket_id || t.id || ''} • 👤 <span class="text-info">${t.username || ''}</span></span><div class="mt-0.5">${matchesHtml}</div>
+                                <div class="bg-tGreyBase border border-white/10 rounded-xl p-3 d-flex flex-column flex-md-row justify-content-between gap-3 hover:border-tManager/50 transition">
+                                    <div class="flex-grow-1">
+                                        <div class="mb-2 pb-2 border-b border-white/5 d-flex justify-content-between align-items-center">
+                                            <span class="text-gray-400 font-mono text-[10px]">#${t.ticket_id || t.id || ''}</span>
+                                            <span class="text-white font-bold text-sm"><i class="fas fa-user text-gray-500 mr-1 text-xs"></i> ${escapeHTML(t.username || '')}</span>
+                                        </div>
+                                        <div class="text-xs font-mono leading-relaxed">${matchesHtml}</div>
                                     </div>
-                                    <div class="text-end font-mono border-top border-md-0 border-dark pt-1 pt-md-0">
-                                        <div class="text-secondary" style="font-size: 0.65rem;">Cote: X${parseFloat(t.total_cote || 0).toFixed(2)} | Mise: ${parseFloat(t.mise || 0).toFixed(2)}</div>
-                                        <div class="fw-bold ${badgeColor}" style="font-size: 0.75rem;">Gain: +${parseFloat(t.gain || 0).toFixed(2)} TND</div>
-                                        <span class="badge border border-secondary text-uppercase ${badgeColor} py-0 px-1" style="font-size: 0.55rem;">${t.status}</span>
+                                    <div class="text-end font-mono border-t border-md-0 border-white/10 pt-2 pt-md-0 d-flex flex-column justify-content-center align-items-end min-w-[120px]">
+                                        <div class="text-gray-400 text-[10px] mb-1">Cote: <span class="text-white">X${parseFloat(t.total_cote || 0).toFixed(2)}</span></div>
+                                        <div class="text-gray-400 text-[10px] mb-2">Mise: <span class="text-white">${parseFloat(t.mise || 0).toFixed(2)}</span></div>
+                                        <div class="font-black ${t.status === 'gagne' ? 'text-neonGreen' : 'text-white'} text-sm mb-2">Gain: ${parseFloat(t.gain || 0).toFixed(2)}</div>
+                                        <span class="badge border text-uppercase px-2 py-1 rounded ${badgeColor} text-[9px] tracking-widest">${t.status}</span>
                                     </div>
                                 </div>`;
                             });
                             html += `</div>`;
                             body.innerHTML = html;
-                        } else { body.innerHTML = `<div class="text-center p-3 text-secondary" style="font-size: 0.75rem;">Aucun ticket sportif trouvé.</div>`; }
+                        } else { body.innerHTML = `<div class="text-center p-5 text-gray-500 font-bold uppercase tracking-widest text-xs">Aucun ticket sportif trouvé.</div>`; }
                     }
-                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur API</div>`; }
+                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-tRed">Erreur API</div>`; }
             }
             else if (safeType === 'transfert') {
                 try {
@@ -788,7 +679,7 @@
                         allTransactionsCache = await res.json();
                         renderTransactionsModalUI(body);
                     }
-                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur API</div>`; }
+                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-tRed">Erreur API</div>`; }
             }
             else if (safeType === 'compte') {
                 try {
@@ -800,62 +691,59 @@
                         const usersList = await usersRes.json();
                         allTransactionsCache = await txRes.json();
                         renderCompteStatsUI(body, usersList);
-                    } else { body.innerHTML = `<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur de récupération des données</div>`; }
-                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur API</div>`; }
+                    } else { body.innerHTML = `<div class="text-center p-3 text-tRed">Erreur de récupération des données</div>`; }
+                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-tRed">Erreur API</div>`; }
             }
             else if (safeType === 'casino') {
+                title.innerHTML = '<i class="fa-solid fa-dice text-tManager mr-2"></i> Casino Logs';
                 try {
                     const res = await fetch(`${BACKEND_URL}/api/admin/casino-history`, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const history = await res.json();
                         if (history && history.length > 0) {
-                            let html = `<div class="d-flex flex-column gap-1.5" style="max-height: 350px; overflow-y: auto;">`;
+                            let html = `<div class="d-flex flex-column gap-2" style="max-height: 450px; overflow-y: auto;">`;
                             history.forEach(t => {
                                 const isWin = t.action === 'win';
-                                const badgeColor = isWin ? 'text-success' : 'text-danger';
+                                const colorClass = isWin ? 'text-neonGreen' : 'text-gray-400';
                                 const sign = isWin ? '+' : '-';
                                 const actionName = isWin ? 'Gain' : 'Mise';
 
                                 html += `
-                                <div class="bg-black border border-dark rounded-2 p-2 d-flex justify-content-between align-items-center" style="font-size: 0.7rem;">
+                                <div class="bg-tGreyBase border border-white/5 rounded-xl p-3 d-flex justify-content-between align-items-center hover:border-white/20 transition">
                                     <div>
-                                        <div class="text-white fw-bold">👤 ${escapeHTML(t.username)}</div>
-                                        <div class="text-secondary font-mono" style="font-size: 0.6rem;">🕒 ${t.date}</div>
+                                        <div class="text-white font-bold text-sm mb-1"><i class="fas fa-user text-gray-500 mr-1 text-xs"></i> ${escapeHTML(t.username)}</div>
+                                        <div class="text-gray-500 font-mono text-[10px]">🕒 ${t.date}</div>
                                     </div>
                                     <div class="text-end font-mono">
-                                        <span class="badge border border-secondary text-uppercase ${badgeColor} py-0 px-1 mb-1" style="font-size: 0.55rem;">${actionName}</span>
-                                        <div class="${badgeColor} fw-bold" style="font-size: 0.75rem;">${sign}${parseFloat(t.amount).toFixed(2)} TND</div>
+                                        <div class="text-[10px] uppercase font-bold text-gray-500 mb-1 tracking-widest">${actionName}</div>
+                                        <div class="${colorClass} font-black text-sm">${sign}${parseFloat(t.amount).toFixed(2)} TND</div>
                                     </div>
                                 </div>`;
                             });
                             html += `</div>`;
                             body.innerHTML = html;
-                        } else {
-                            body.innerHTML = `<div class="text-center p-3 text-secondary" style="font-size: 0.75rem;">Aucun historique de casino pour le moment.</div>`;
-                        }
+                        } else { body.innerHTML = `<div class="text-center p-5 text-gray-500 font-bold uppercase tracking-widest text-xs">Aucun historique de casino.</div>`; }
                     }
-                } catch (e) {
-                    body.innerHTML = `<div class="text-center p-3 text-danger" style="font-size: 0.75rem;">Erreur API</div>`;
-                }
+                } catch (e) { body.innerHTML = `<div class="text-center p-3 text-tRed">Erreur API</div>`; }
             }
         }
 
         function renderTransactionsModalUI(container) {
             let html = `
-                <div class="row g-1 mb-2 bg-black border border-dark p-2 rounded-2 align-items-center" style="font-size: 0.7rem;">
-                    <div class="col-5">
-                        <label class="text-secondary mb-0">De:</label>
-                        <input type="date" id="tx-start-date" class="form-control form-control-mini text-center py-0">
+                <div class="row g-2 mb-3 bg-tGreyBase border border-white/10 p-3 rounded-xl align-items-center">
+                    <div class="col-12 col-md-5">
+                        <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1">Date de début:</label>
+                        <input type="date" id="tx-start-date" class="form-control tb-input font-mono text-sm">
                     </div>
-                    <div class="col-5">
-                        <label class="text-secondary mb-0">À:</label>
-                        <input type="date" id="tx-end-date" class="form-control form-control-mini text-center py-0">
+                    <div class="col-12 col-md-5">
+                        <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1">Date de fin:</label>
+                        <input type="date" id="tx-end-date" class="form-control tb-input font-mono text-sm">
                     </div>
-                    <div class="col-2 mt-auto">
-                        <button onclick="applyModalDateFilter()" class="btn btn-mini btn-manager-mini w-100 py-0.5"><i class="fa-solid fa-search"></i></button>
+                    <div class="col-12 col-md-2 mt-auto">
+                        <button onclick="applyModalDateFilter()" class="btn-manager-glow w-100 py-2 rounded-xl"><i class="fa-solid fa-search"></i></button>
                     </div>
                 </div>
-                <div id="modal-tx-list" class="d-flex flex-column gap-1" style="max-height: 320px; overflow-y: auto;"></div>
+                <div id="modal-tx-list" class="d-flex flex-column gap-2" style="max-height: 400px; overflow-y: auto;"></div>
             `;
             container.innerHTML = html;
             displayModalTransactions(allTransactionsCache);
@@ -881,7 +769,7 @@
         function displayModalTransactions(transactions) {
             const listContainer = document.getElementById('modal-tx-list');
             if (!transactions || transactions.length === 0) {
-                listContainer.innerHTML = '<div class="text-center text-secondary p-3" style="font-size: 0.7rem;">Aucune transaction</div>';
+                listContainer.innerHTML = '<div class="text-center text-gray-500 p-5 font-bold uppercase tracking-widest text-xs">Aucune transaction</div>';
                 return;
             }
             let html = '';
@@ -889,20 +777,20 @@
                 const amt = Math.abs(parseFloat(t.amount)).toFixed(2);
                 const isCharge = (t.action === 'charge' || t.action === 'dépôt' || t.action === 'deposit_request');
 
-                const color = isCharge ? 'text-success' : 'text-danger';
+                const color = isCharge ? 'text-neonGreen' : 'text-tRed';
                 const sign = isCharge ? '+' : '-';
 
                 const targetName = escapeHTML(t.target_username || t.target || 'Inconnu');
                 const actionName = escapeHTML(t.action);
 
                 html += `
-                    <div class="bg-black border border-dark rounded-2 p-2 d-flex justify-content-between align-items-center mb-1" style="font-size: 0.7rem;">
+                    <div class="bg-tGreyBase border border-white/5 rounded-xl p-3 d-flex justify-content-between align-items-center hover:border-white/20 transition">
                         <div>
-                            <div class="text-white fw-bold">👤 ${targetName} <span class="text-secondary" style="font-size:0.55rem">(${actionName})</span></div>
-                            <div class="text-secondary font-mono" style="font-size: 0.6rem;">🕒 ${t.date || ''}</div>
+                            <div class="text-white font-bold text-sm mb-1">👤 ${targetName} <span class="text-gray-500 font-mono text-[10px] ml-1 uppercase">(${actionName})</span></div>
+                            <div class="text-gray-500 font-mono text-[10px]">🕒 ${t.date || ''}</div>
                         </div>
                         <div class="text-end font-mono">
-                            <div class="${color} fw-bold" style="font-size: 0.75rem;">${sign}${amt} TND</div>
+                            <div class="${color} font-black text-sm">${sign}${amt} TND</div>
                         </div>
                     </div>`;
             });
@@ -918,22 +806,22 @@
                 });
             }
             let html = `
-                <div class="bg-black border border-dark p-2 rounded-2 mb-2" style="font-size: 0.7rem;">
-                    <div class="row g-1" dir="ltr">
+                <div class="bg-tGreyBase border border-white/10 p-3 rounded-xl mb-4">
+                    <div class="row g-2 align-items-end" dir="ltr">
                         <div class="col-12 col-md-4">
-                            <label class="text-secondary mb-0">Compte:</label>
-                            <select id="stat-user-select" class="form-select form-select-mini text-center fw-bold text-white py-0">${userOptions}</select>
+                            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1">Compte:</label>
+                            <select id="stat-user-select" class="form-select tb-input text-center fw-bold text-white text-sm">${userOptions}</select>
                         </div>
                         <div class="col-6 col-md-3">
-                            <label class="text-secondary mb-0">De:</label>
-                            <input type="date" id="stat-start-date" class="form-control form-control-mini text-center py-0">
+                            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1">De:</label>
+                            <input type="date" id="stat-start-date" class="form-control tb-input text-center text-sm">
                         </div>
                         <div class="col-6 col-md-3">
-                            <label class="text-secondary mb-0">À:</label>
-                            <input type="date" id="stat-end-date" class="form-control form-control-mini text-center py-0">
+                            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-1">À:</label>
+                            <input type="date" id="stat-end-date" class="form-control tb-input text-center text-sm">
                         </div>
                         <div class="col-12 col-md-2 mt-auto">
-                            <button onclick="calculateAccountStats()" class="btn btn-mini btn-manager-mini w-100 py-1">Calculer</button>
+                            <button onclick="calculateAccountStats()" class="btn btn-manager-glow w-100 py-2.5 rounded-xl font-bold uppercase tracking-widest text-xs">Calculer</button>
                         </div>
                     </div>
                 </div>
@@ -968,28 +856,31 @@
                 else if (t.action === 'withdraw') totalWithdrawn += amt;
             });
 
+            const net = totalCharged - totalWithdrawn;
+            const netColor = net >= 0 ? 'text-neonGreen' : 'text-tRed';
+
             const dashboard = document.getElementById('stat-dashboard-results');
             const titleText = selectedUser === "ALL" ? "📊 Statistiques Générales" : `📊 Statistiques: ${selectedUser}`;
 
             let html = `
-                <h6 class="text-manager fw-bold text-center mb-1 mt-2" dir="ltr" style="font-size: 0.75rem;">${titleText}</h6>
-                <div class="row g-1 mb-1">
+                <h6 class="text-white font-black text-center mb-4 mt-2 text-lg" dir="ltr">${titleText}</h6>
+                <div class="row g-3 mb-3">
                     <div class="col-6">
-                        <div class="bg-black border border-success rounded-2 p-2 text-center">
-                            <div class="text-secondary" style="font-size: 0.6rem;">Dépôt ⬆️</div>
-                            <div class="text-success fw-bold font-mono" style="font-size: 0.8rem;">${totalCharged.toFixed(2)}</div>
+                        <div class="bg-black/50 border border-neonGreen/30 rounded-2xl p-4 text-center">
+                            <div class="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-2"><i class="fas fa-arrow-up text-neonGreen mr-1"></i> Dépôt</div>
+                            <div class="text-neonGreen font-black font-mono text-xl md:text-2xl">${totalCharged.toFixed(2)}</div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="bg-black border border-danger rounded-2 p-2 text-center">
-                            <div class="text-secondary" style="font-size: 0.6rem;">Retrait ⬇️</div>
-                            <div class="text-danger fw-bold font-mono" style="font-size: 0.8rem;">${totalWithdrawn.toFixed(2)}</div>
+                        <div class="bg-black/50 border border-tRed/30 rounded-2xl p-4 text-center">
+                            <div class="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-2"><i class="fas fa-arrow-down text-tRed mr-1"></i> Retrait</div>
+                            <div class="text-tRed font-black font-mono text-xl md:text-2xl">${totalWithdrawn.toFixed(2)}</div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-black border border-dark rounded-2 p-2 text-center">
-                    <div class="text-secondary" style="font-size: 0.6rem;">Net</div>
-                    <div class="text-info fw-bold font-mono" style="font-size: 0.85rem;">${(totalCharged - totalWithdrawn).toFixed(2)} TND</div>
+                <div class="bg-tGreyBase border border-white/10 rounded-2xl p-4 text-center">
+                    <div class="text-gray-400 text-xs uppercase font-bold tracking-widest mb-2">Bénéfice Net</div>
+                    <div class="${netColor} font-black font-mono text-3xl tracking-wider">${net.toFixed(2)} TND</div>
                 </div>
             `;
             dashboard.innerHTML = html;
@@ -1011,7 +902,7 @@
         async function resettleTicket() {
             const ticketId = document.getElementById('ticket-search-input').value;
             const newStatus = document.querySelector('#ticket-details-section select').value;
-            if (!ticketId) return showNotification("❌ Saisir un ID de ticket", "error");
+            if (!ticketId) return showNotification("Saisir un ID de ticket", "error");
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/resettle-ticket`, {
@@ -1020,11 +911,11 @@
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    showNotification(`✅ ${data.message}`);
+                    showNotification(data.message);
                     hideResettlementPanel();
                 } else {
                     const err = await res.json();
-                    showNotification(`❌ Erreur: ${err.detail || "Erreur"}`, "error");
+                    showNotification(err.detail || "Erreur", "error");
                 }
             } catch (e) { showNotification("Erreur de connexion", "error"); }
         }
@@ -1032,13 +923,13 @@
         async function fetchAllTickets() {
             const listContainer = document.getElementById('all-tickets-list');
             if (!listContainer) return;
-            listContainer.innerHTML = '<div class="text-info text-center p-2" style="font-size: 0.7rem;">Chargement...</div>';
+            listContainer.innerHTML = '<div class="text-center p-3 text-tManager font-bold text-xs uppercase tracking-widest animate-pulse">Chargement...</div>';
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/get-all-tickets`, { headers: getAuthHeaders() });
                 const tickets = await res.json();
                 if (tickets.length === 0) {
-                    listContainer.innerHTML = '<div class="text-secondary text-center p-2" style="font-size: 0.7rem;">Aucun ticket trouvé.</div>';
+                    listContainer.innerHTML = '<div class="text-gray-500 text-center p-4 font-bold text-xs uppercase tracking-widest">Aucun ticket trouvé.</div>';
                     return;
                 }
                 listContainer.innerHTML = tickets.map(t => {
@@ -1046,19 +937,21 @@
                     const user = escapeHTML(t.username || t.user || "Unknown");
                     const status = escapeHTML(t.status || "N/A");
                     const matchName = escapeHTML(t.match || 'Match ...');
+                    const badgeColor = status === 'gagne' ? 'bg-neonGreen/20 text-neonGreen border-neonGreen/30' : (status === 'perdu' ? 'bg-tRed/20 text-tRed border-tRed/30' : 'bg-blue-400/20 text-blue-400 border-blue-400/30');
+
                     return `
-                    <div class="bg-black border border-dark rounded-2 p-2" style="font-size: 0.7rem;">
-                        <div class="d-flex justify-content-between align-items-center mb-0.5">
+                    <div class="bg-tGreyBase border border-white/5 rounded-xl p-3 mb-2 hover:border-white/20 transition">
+                        <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-b border-white/5">
                             <div>
-                                <span class="text-white fw-bold font-mono">#${tId}</span> • 
-                                <span class="text-secondary">${user}</span>
+                                <span class="text-white font-black font-mono text-sm">#${tId}</span> <span class="text-gray-600 mx-1">•</span> 
+                                <span class="text-gray-400 text-xs font-bold"><i class="fas fa-user text-gray-600 mr-1 text-[10px]"></i> ${user}</span>
                             </div>
-                            <span class="badge ${status === 'gagne' ? 'bg-success' : (status === 'perdu' ? 'bg-danger' : 'bg-info')} py-0 px-1 text-uppercase" style="font-size: 0.55rem;">${status}</span>
+                            <span class="badge border ${badgeColor} py-1 px-2 text-uppercase text-[9px] tracking-widest">${status}</span>
                         </div>
-                        <div class="text-white">${matchName}</div>
+                        <div class="text-gray-300 text-xs font-mono leading-relaxed">${matchName}</div>
                     </div>`;
                 }).join('');
-            } catch (e) { listContainer.innerHTML = '<div class="text-danger text-center p-2">Erreur</div>'; }
+            } catch (e) { listContainer.innerHTML = '<div class="text-tRed text-center p-3 font-bold">Erreur Réseau</div>'; }
         }
 
         function openPasswordModal() { new bootstrap.Modal(document.getElementById('passwordModal')).show(); }
@@ -1067,10 +960,10 @@
         async function submitNewPassword() {
             const passwordInput = document.getElementById('new-sys-pass');
             const new_password = passwordInput.value.trim();
-            const updateBtn = document.querySelector('#passwordModal button.btn-manager-mini');
+            const updateBtn = document.querySelector('#passwordModal button');
 
             if (!new_password || new_password.length < 6) return showNotification('6 caractères minimum!', 'error');
-            if (updateBtn) { updateBtn.disabled = true; updateBtn.innerText = '⏳'; }
+            if (updateBtn) { updateBtn.disabled = true; updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/user/change-password`, {
@@ -1113,9 +1006,8 @@
             const duration = 2 * 1000;
             const end = Date.now() + duration;
             (function frame() {
-                // تم تغيير ألوان الاحتفال إلى الأرجواني الفخم
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#a855f7', '#9333ea'], zIndex: 9999 });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#a855f7', '#9333ea'], zIndex: 9999 });
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#a855f7', '#9333ea', '#00ff87'], zIndex: 9999 });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#a855f7', '#9333ea', '#00ff87'], zIndex: 9999 });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
@@ -1130,7 +1022,7 @@
             const amount = parseFloat(amountInput);
             if (isNaN(amount) || amount <= 0) return showNotification('Montant invalide!', 'error');
 
-            if (actionBtn) { actionBtn.disabled = true; actionBtn.innerText = '⏳'; }
+            if (actionBtn) { actionBtn.disabled = true; actionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/admin/update-balance`, {
@@ -1139,13 +1031,17 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    showNotification('Succès!');
+                    showNotification('Opération réussie!');
+                    if(action === 'charge') triggerGoldRain();
                     document.getElementById('target-action-amount').value = '';
                     loadNetworkData();
                 } else { showNotification(data.detail || 'Erreur', 'error'); }
             } catch (e) { showNotification('Erreur', 'error'); }
             finally {
-                if (actionBtn) { actionBtn.disabled = false; actionBtn.innerText = action === 'charge' ? 'Créditer' : 'Retirer'; }
+                if (actionBtn) { 
+                    actionBtn.disabled = false; 
+                    actionBtn.innerText = action === 'charge' ? 'Créditer' : 'Retirer'; 
+                }
             }
         }
 
@@ -1163,19 +1059,13 @@
             if (!username || !password) return showNotification('Veuillez remplir le nom d\'utilisateur et le mot de passe!', 'error');
 
             const btn = document.getElementById('btn-create');
-            if (btn) { btn.disabled = true; btn.innerText = '⏳'; }
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/register`, {
                     method: 'POST',
                     headers: getAuthHeaders(),
-                    body: JSON.stringify({
-                        username,
-                        password,
-                        role,
-                        created_by: user.username, 
-                        phone
-                    })
+                    body: JSON.stringify({ username, password, role, created_by: user.username, phone })
                 });
 
                 const data = await res.json();
@@ -1185,10 +1075,7 @@
                     if (usernameInput) usernameInput.value = '';
                     if (passwordInput) passwordInput.value = '';
                     if (phoneInput) phoneInput.value = '';
-
-                    if (typeof loadNetworkData === 'function') {
-                        loadNetworkData();
-                    }
+                    loadNetworkData();
                 } else {
                     showNotification(`❌ ${data.detail || 'Erreur lors de la création'}`, 'error');
                 }
